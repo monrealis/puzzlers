@@ -7,10 +7,10 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class MainTest {
+public class ValidCombinationsFinderTest {
 	@Test
 	public void findsAllValidCombinations() {
-		assertEquals(136, new MainTest().countValidCombinations());
+		assertEquals(136, new ValidCombinationsFinderTest().countValidCombinations());
 	}
 	
 	public int countValidCombinations() {
