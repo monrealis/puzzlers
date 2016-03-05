@@ -1,15 +1,24 @@
 package eu.vytenis.problems._20160211;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
+
 public class MainTest {
-	public static void main(String[] args) {
+	@Test
+	public void findsAllValidCombinations() {
+		assertEquals(136, new MainTest().countValidCombinations());
+	}
+	
+	public int countValidCombinations() {
 		List<String> allCombinationsWithUniqueDigits = generateCombinations();
 		checkNumberOfCombinations(allCombinationsWithUniqueDigits);
 		List<String> validCombinations = collectValidCombinations(allCombinationsWithUniqueDigits);
 		checkValidCombinations(validCombinations);
-		System.out.println(validCombinations.size()); // 136
+		return validCombinations.size();
 	}
 
 	private static List<String> generateCombinations() {
