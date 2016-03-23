@@ -9,6 +9,25 @@ public class PolynomialsTest {
 	private int b = 11;
 	private int c = 12;
 	private int[] coefficients = { c, b, a };
+	private int n = 10000000;
+
+	@Test
+	public void measure1() {
+		for (int i = 0; i < n; ++i)
+			calculate1(2);
+	}
+
+	@Test
+	public void measure2() {
+		for (int i = 0; i < n; ++i)
+			calculate1(2);
+	}
+
+	@Test
+	public void measure3() {
+		for (int i = 0; i < n; ++i)
+			calculate1(2);
+	}
 
 	@Test
 	public void calculates1() {
