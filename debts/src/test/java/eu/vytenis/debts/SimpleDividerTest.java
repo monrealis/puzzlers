@@ -10,7 +10,7 @@ import org.junit.Test;
 // https://www.youtube.com/watch?v=f4dA4BTv7KQ
 // http://www.biu.ac.il/soc/ec/jlwecon/wp/2.%20AumannGame%20-%20bulletin.pdf
 public class SimpleDividerTest {
-	private Number estate = new BigDecimal("66.66");
+	private Number estate;
 	private Number debt1 = new BigDecimal(100);
 	private Number debt2 = new BigDecimal(300);
 	private Number payment1;
@@ -18,6 +18,7 @@ public class SimpleDividerTest {
 
 	@Test
 	public void example1() {
+		estate = new BigDecimal("66.66");
 		split();
 		assertEquals("33.33", payment1.toString());
 		assertEquals("33.33", payment2.toString());
@@ -35,8 +36,10 @@ public class SimpleDividerTest {
 		BigDecimal shared = debt1().min(debt2()).min(estate());
 		BigDecimal sharedPart = shared.divide(new BigDecimal(2));
 		BigDecimal estateLeft = estate().subtract(shared);
-		BigDecimal additionalPart1 = estateLeft.min(debt1().subtract(shared));
-		BigDecimal additionalPart2 = estateLeft.min(debt2().subtract(shared));
+		BigDecimal additionalPart1 = debt1().compareTo(shared) > 0 ? estateLeft
+				: BigDecimal.ZERO;
+		BigDecimal additionalPart2 = debt2().compareTo(shared) > 0 ? estateLeft
+				: BigDecimal.ZERO;
 		payment1 = sharedPart.add(additionalPart1);
 		payment2 = sharedPart.add(additionalPart2);
 	}
