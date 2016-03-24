@@ -41,20 +41,27 @@ public class SimpleDividerTest {
 	}
 
 	private void split() {
-		if (debt1().add(debt2()).compareTo(estate()) <= 0) {
-			payment1 = debt1();
-			payment2 = debt2();
-		} else {
-			BigDecimal shared = debt1().min(debt2()).min(estate());
-			BigDecimal sharedPart = shared.divide(new BigDecimal(2));
-			BigDecimal estateLeft = estate().subtract(shared);
-			BigDecimal additionalPart1 = debt1().compareTo(shared) > 0 ? estateLeft
-					: BigDecimal.ZERO;
-			BigDecimal additionalPart2 = debt2().compareTo(shared) > 0 ? estateLeft
-					: BigDecimal.ZERO;
-			payment1 = sharedPart.add(additionalPart1);
-			payment2 = sharedPart.add(additionalPart2);
-		}
+		if (debt1().add(debt2()).compareTo(estate()) <= 0)
+			repayAll();
+		else
+			repayPart();
+	}
+
+	private void repayAll() {
+		payment1 = debt1();
+		payment2 = debt2();
+	}
+
+	private void repayPart() {
+		BigDecimal shared = debt1().min(debt2()).min(estate());
+		BigDecimal sharedPart = shared.divide(new BigDecimal(2));
+		BigDecimal estateLeft = estate().subtract(shared);
+		BigDecimal additionalPart1 = debt1().compareTo(shared) > 0 ? estateLeft
+				: BigDecimal.ZERO;
+		BigDecimal additionalPart2 = debt2().compareTo(shared) > 0 ? estateLeft
+				: BigDecimal.ZERO;
+		payment1 = sharedPart.add(additionalPart1);
+		payment2 = sharedPart.add(additionalPart2);
 	}
 
 	private BigDecimal estate() {
