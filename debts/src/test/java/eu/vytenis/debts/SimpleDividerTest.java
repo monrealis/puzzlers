@@ -17,6 +17,14 @@ public class SimpleDividerTest {
 	private Number payment2;
 
 	@Test
+	public void enoughForAll() {
+		estate = new BigDecimal("5000");
+		split();
+		assertEquals("100", payment1.toString());
+		assertEquals("300", payment2.toString());
+	}
+
+	@Test
 	public void example1() {
 		estate = new BigDecimal("66.66");
 		split();
@@ -33,15 +41,20 @@ public class SimpleDividerTest {
 	}
 
 	private void split() {
-		BigDecimal shared = debt1().min(debt2()).min(estate());
-		BigDecimal sharedPart = shared.divide(new BigDecimal(2));
-		BigDecimal estateLeft = estate().subtract(shared);
-		BigDecimal additionalPart1 = debt1().compareTo(shared) > 0 ? estateLeft
-				: BigDecimal.ZERO;
-		BigDecimal additionalPart2 = debt2().compareTo(shared) > 0 ? estateLeft
-				: BigDecimal.ZERO;
-		payment1 = sharedPart.add(additionalPart1);
-		payment2 = sharedPart.add(additionalPart2);
+		if (debt1().add(debt2()).compareTo(estate()) <= 0) {
+			payment1 = debt1();
+			payment2 = debt2();
+		} else {
+			BigDecimal shared = debt1().min(debt2()).min(estate());
+			BigDecimal sharedPart = shared.divide(new BigDecimal(2));
+			BigDecimal estateLeft = estate().subtract(shared);
+			BigDecimal additionalPart1 = debt1().compareTo(shared) > 0 ? estateLeft
+					: BigDecimal.ZERO;
+			BigDecimal additionalPart2 = debt2().compareTo(shared) > 0 ? estateLeft
+					: BigDecimal.ZERO;
+			payment1 = sharedPart.add(additionalPart1);
+			payment2 = sharedPart.add(additionalPart2);
+		}
 	}
 
 	private BigDecimal estate() {
