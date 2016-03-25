@@ -49,6 +49,10 @@ public class SimpleDividerTest {
 		assertPayments("50, 150");
 	}
 
+	private void split() {
+		payments = new Splitter(estate, debts).split();
+	}
+
 	private void assertPayments(String expectedPayments) {
 		List<String> s = stream(payments).map(this::format).collect(toList());
 		String actual = Joiner.on(", ").join(s);
@@ -61,42 +65,4 @@ public class SimpleDividerTest {
 		return format.format(fraction);
 	}
 
-	private void split() {
-		if (sum(debts).compareTo(estate) <= 0)
-			repayAll();
-		else
-			repayPart();
-	}
-
-	private void repayAll() {
-		payments = debts;
-	}
-
-	private void repayPart() {
-		Fraction shared = min(min(debts), estate);
-		Fraction lowerPart = shared.divide(debts.length);
-		Fraction estateLeft = estate.subtract(shared);
-		Fraction[] upperParts = new Fraction[debts.length];
-		for (int i = 0; i < debts.length; ++i)
-			upperParts[i] = debts[i].compareTo(shared) > 0 ? estateLeft
-					: Fraction.ZERO;
-		payments = new Fraction[debts.length];
-		for (int i = 0; i < debts.length; ++i)
-			payments[i] = lowerPart.add(upperParts[i]);
-	}
-
-	private Fraction min(Fraction... fractions) {
-		Fraction min = fractions[0];
-		for (int i = 1; i < fractions.length; ++i)
-			if (fractions[i].compareTo(min) < 0)
-				min = fractions[i];
-		return min;
-	}
-
-	private Fraction sum(Fraction... fractions) {
-		Fraction sum = fractions[0];
-		for (int i = 1; i < fractions.length; ++i)
-			sum = sum.add(fractions[i]);
-		return sum;
-	}
 }
