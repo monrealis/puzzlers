@@ -1,5 +1,7 @@
 package eu.vytenis.debts;
 
+import static java.util.Arrays.stream;
+
 import org.apache.commons.math3.fraction.Fraction;
 
 public class Splitter {
@@ -38,17 +40,21 @@ public class Splitter {
 	}
 
 	private Fraction min(Fraction... fractions) {
-		Fraction min = fractions[0];
-		for (int i = 1; i < fractions.length; ++i)
-			if (fractions[i].compareTo(min) < 0)
-				min = fractions[i];
-		return min;
+		return stream(fractions).reduce(Splitter::minOfTwo).get();
 	}
 
 	private Fraction sum(Fraction... fractions) {
-		Fraction sum = fractions[0];
-		for (int i = 1; i < fractions.length; ++i)
-			sum = sum.add(fractions[i]);
-		return sum;
+		return stream(fractions).reduce(Fraction.ZERO, Splitter::sumOfTwo);
+	}
+
+	private static Fraction minOfTwo(Fraction f1, Fraction f2) {
+		if (f1.compareTo(f2) <= 0)
+			return f1;
+		else
+			return f2;
+	}
+
+	private static Fraction sumOfTwo(Fraction f1, Fraction f2) {
+		return f1.add(f2);
 	}
 }
