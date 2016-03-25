@@ -2,23 +2,24 @@ package eu.vytenis.debts;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
-
+import org.apache.commons.math3.fraction.Fraction;
+import org.apache.commons.math3.fraction.ProperFractionFormat;
 import org.junit.Test;
 
 // http://mindyourdecisions.com/blog/2008/06/10/how-game-theory-solved-a-religious-mystery/
 // https://www.youtube.com/watch?v=f4dA4BTv7KQ
 // http://www.biu.ac.il/soc/ec/jlwecon/wp/2.%20AumannGame%20-%20bulletin.pdf
 public class SimpleDividerTest {
-	private Number estate;
-	private Number debt1 = new BigDecimal(100);
-	private Number debt2 = new BigDecimal(300);
-	private Number payment1;
-	private Number payment2;
+	private ProperFractionFormat f = new ProperFractionFormat();
+	private Fraction estate;
+	private Fraction debt1 = Fraction.ZERO.add(100);
+	private Fraction debt2 = Fraction.ZERO.add(300);
+	private Fraction payment1;
+	private Fraction payment2;
 
 	@Test
 	public void enoughForAll() {
-		estate = new BigDecimal("5000");
+		estate = new Fraction(500, 1);
 		split();
 		assertEquals("100", payment1.toString());
 		assertEquals("300", payment2.toString());
@@ -26,15 +27,15 @@ public class SimpleDividerTest {
 
 	@Test
 	public void example1() {
-		estate = new BigDecimal("66.66");
+		estate = new Fraction(2, 3).add(66);
 		split();
-		assertEquals("33.33", payment1.toString());
-		assertEquals("33.33", payment2.toString());
+		assertEquals("33 1 / 3", f.format(payment1));
+		assertEquals("33 1 / 3", f.format(payment2));
 	}
 
 	@Test
 	public void example2() {
-		estate = 125;
+		estate = new Fraction(125, 1);
 		split();
 		assertEquals("50", payment1.toString());
 		assertEquals("75", payment2.toString());
@@ -42,7 +43,7 @@ public class SimpleDividerTest {
 
 	@Test
 	public void example3() {
-		estate = 200;
+		estate = new Fraction(200);
 		split();
 		assertEquals("50", payment1.toString());
 		assertEquals("150", payment2.toString());
@@ -61,26 +62,34 @@ public class SimpleDividerTest {
 	}
 
 	private void repayPart() {
-		BigDecimal shared = debt1().min(debt2()).min(estate());
-		BigDecimal sharedPart = shared.divide(new BigDecimal(2));
-		BigDecimal estateLeft = estate().subtract(shared);
-		BigDecimal additionalPart1 = debt1().compareTo(shared) > 0 ? estateLeft
-				: BigDecimal.ZERO;
-		BigDecimal additionalPart2 = debt2().compareTo(shared) > 0 ? estateLeft
-				: BigDecimal.ZERO;
+		Fraction shared = min(debt1(), debt2(), estate());
+		Fraction sharedPart = shared.divide(Fraction.TWO);
+		Fraction estateLeft = estate().subtract(shared);
+		Fraction additionalPart1 = debt1().compareTo(shared) > 0 ? estateLeft
+				: Fraction.ZERO;
+		Fraction additionalPart2 = debt2().compareTo(shared) > 0 ? estateLeft
+				: Fraction.ZERO;
 		payment1 = sharedPart.add(additionalPart1);
 		payment2 = sharedPart.add(additionalPart2);
 	}
 
-	private BigDecimal estate() {
-		return new BigDecimal(estate.toString());
+	private Fraction min(Fraction... fractions) {
+		Fraction min = fractions[0];
+		for (int i = 1; i < fractions.length; ++i)
+			if (fractions[i].compareTo(min) < 0)
+				min = fractions[i];
+		return min;
 	}
 
-	private BigDecimal debt1() {
-		return new BigDecimal(debt1.toString());
+	private Fraction estate() {
+		return estate;
 	}
 
-	private BigDecimal debt2() {
-		return new BigDecimal(debt2.toString());
+	private Fraction debt1() {
+		return debt1;
+	}
+
+	private Fraction debt2() {
+		return debt2;
 	}
 }
