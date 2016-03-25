@@ -64,7 +64,7 @@ public class SimpleDividerTest {
 	}
 
 	private void split() {
-		if (debt1.add(debt2).compareTo(estate) <= 0)
+		if (sum(debts).compareTo(estate) <= 0)
 			repayAll();
 		else
 			repayPart();
@@ -93,5 +93,12 @@ public class SimpleDividerTest {
 			if (fractions[i].compareTo(min) < 0)
 				min = fractions[i];
 		return min;
+	}
+
+	private Fraction sum(Fraction... fractions) {
+		Fraction sum = fractions[0];
+		for (int i = 1; i < fractions.length; ++i)
+			sum = sum.add(fractions[i]);
+		return sum;
 	}
 }
