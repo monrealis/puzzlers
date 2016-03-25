@@ -76,15 +76,15 @@ public class SimpleDividerTest {
 
 	private void repayPart() {
 		Fraction shared = min(min(debts), estate);
-		Fraction lowerPart = shared.divide(Fraction.TWO);
+		Fraction lowerPart = shared.divide(debts.length);
 		Fraction estateLeft = estate.subtract(shared);
 		Fraction[] upperParts = new Fraction[debts.length];
 		for (int i = 0; i < debts.length; ++i)
 			upperParts[i] = debts[i].compareTo(shared) > 0 ? estateLeft
 					: Fraction.ZERO;
 		payments = new Fraction[debts.length];
-		payments[0] = lowerPart.add(upperParts[0]);
-		payments[1] = lowerPart.add(upperParts[1]);
+		for (int i = 0; i < debts.length; ++i)
+			payments[i] = lowerPart.add(upperParts[i]);
 	}
 
 	private Fraction min(Fraction... fractions) {
