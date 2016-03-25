@@ -4,8 +4,8 @@ import static java.util.Arrays.fill;
 import static java.util.Arrays.stream;
 import static java.util.Collections.sort;
 
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.math3.fraction.Fraction;
@@ -15,7 +15,8 @@ public class Splitter {
 	private final Fraction[] debts;
 	private final Fraction[] payments;
 	private final int n;
-	private final List<Integer> indexesFromSmallestDebt = new ArrayList<>();
+	private final List<Integer> indexesFromSmallestDebt;
+	private final List<Integer> indexesFromGreatestDebt;
 
 	public Splitter(Fraction estate, Fraction[] debts) {
 		this.estate = estate;
@@ -23,18 +24,17 @@ public class Splitter {
 		this.n = debts.length;
 		this.payments = new Fraction[n];
 		fill(payments, Fraction.ZERO);
-		orderFromSmallest();
+		ByDebtComparator c = new ByDebtComparator();
+		indexesFromSmallestDebt = orderDebtors(c);
+		indexesFromGreatestDebt = orderDebtors(c.reversed());
 	}
 
-	private void orderFromSmallest() {
+	private List<Integer> orderDebtors(Comparator<Integer> comparator) {
+		List<Integer> debtorIndexes = new LinkedList<>();
 		for (int i = 0; i < n; ++i)
-			indexesFromSmallestDebt.add(i);
-		sort(indexesFromSmallestDebt, new Comparator<Integer>() {
-			@Override
-			public int compare(Integer i1, Integer i2) {
-				return debts[i1].compareTo(debts[i2]);
-			}
-		});
+			debtorIndexes.add(i);
+		sort(debtorIndexes, comparator);
+		return debtorIndexes;
 	}
 
 	public Fraction[] split() {
@@ -86,5 +86,12 @@ public class Splitter {
 
 	private static Fraction sumOfTwo(Fraction f1, Fraction f2) {
 		return f1.add(f2);
+	}
+
+	private final class ByDebtComparator implements Comparator<Integer> {
+		@Override
+		public int compare(Integer i1, Integer i2) {
+			return debts[i1].compareTo(debts[i2]);
+		}
 	}
 }
