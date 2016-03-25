@@ -16,11 +16,9 @@ import com.google.common.base.Joiner;
 // https://www.youtube.com/watch?v=f4dA4BTv7KQ
 // http://www.biu.ac.il/soc/ec/jlwecon/wp/2.%20AumannGame%20-%20bulletin.pdf
 public class SimpleDividerTest {
-	private ProperFractionFormat f = new ProperFractionFormat();
+	private ProperFractionFormat format = new ProperFractionFormat();
 	private Fraction estate;
-	private Fraction debt1 = Fraction.ZERO.add(100);
-	private Fraction debt2 = Fraction.ZERO.add(300);
-	private Fraction[] debts = { debt1, debt2 };
+	private Fraction[] debts = { Fraction.ZERO.add(100), Fraction.ZERO.add(300) };
 	private Fraction[] payments;
 
 	@Test
@@ -60,7 +58,7 @@ public class SimpleDividerTest {
 	private String format(Fraction fraction) {
 		if (fraction.getNumerator() % fraction.getDenominator() == 0)
 			return fraction.toString();
-		return f.format(fraction);
+		return format.format(fraction);
 	}
 
 	private void split() {
