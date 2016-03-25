@@ -6,7 +6,7 @@ import static java.util.Arrays.stream;
 import org.apache.commons.math3.fraction.Fraction;
 
 public class Splitter {
-	private final Fraction estate;
+	private Fraction estate;
 	private final Fraction[] debts;
 	private final Fraction[] payments;
 	private final int n;
@@ -48,6 +48,7 @@ public class Splitter {
 
 	private void add(int i, Fraction amount) {
 		payments[i] = payments[i].add(amount);
+		estate = estate.subtract(amount);
 	}
 
 	private Fraction min(Fraction... fractions) {
