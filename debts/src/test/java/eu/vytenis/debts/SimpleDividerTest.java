@@ -21,32 +21,40 @@ public class SimpleDividerTest {
 	public void enoughForAll() {
 		estate = new Fraction(500, 1);
 		split();
-		assertEquals("100", payment1.toString());
-		assertEquals("300", payment2.toString());
+		assertPayments("100, 300");
 	}
 
 	@Test
 	public void example1() {
 		estate = new Fraction(2, 3).add(66);
 		split();
-		assertEquals("33 1 / 3", f.format(payment1));
-		assertEquals("33 1 / 3", f.format(payment2));
+		assertPayments("33 1 / 3, 33 1 / 3");
 	}
 
 	@Test
 	public void example2() {
 		estate = new Fraction(125, 1);
 		split();
-		assertEquals("50", payment1.toString());
-		assertEquals("75", payment2.toString());
+		assertPayments("50, 75");
 	}
 
 	@Test
 	public void example3() {
 		estate = new Fraction(200);
 		split();
-		assertEquals("50", payment1.toString());
-		assertEquals("150", payment2.toString());
+		assertPayments("50, 150");
+	}
+
+	private void assertPayments(String expectedPayments) {
+		String actual = String.format("%s, %s", format(payment1),
+				format(payment2));
+		assertEquals(expectedPayments, actual);
+	}
+
+	private String format(Fraction fraction) {
+		if (fraction.getNumerator() % fraction.getDenominator() == 0)
+			return fraction.toString();
+		return f.format(fraction);
 	}
 
 	private void split() {
