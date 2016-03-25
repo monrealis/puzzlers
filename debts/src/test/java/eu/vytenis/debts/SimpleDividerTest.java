@@ -50,24 +50,24 @@ public class SimpleDividerTest {
 	}
 
 	private void split() {
-		if (debt1().add(debt2()).compareTo(estate()) <= 0)
+		if (debt1.add(debt2).compareTo(estate) <= 0)
 			repayAll();
 		else
 			repayPart();
 	}
 
 	private void repayAll() {
-		payment1 = debt1();
-		payment2 = debt2();
+		payment1 = debt1;
+		payment2 = debt2;
 	}
 
 	private void repayPart() {
-		Fraction shared = min(debt1(), debt2(), estate());
+		Fraction shared = min(debt1, debt2, estate);
 		Fraction sharedPart = shared.divide(Fraction.TWO);
-		Fraction estateLeft = estate().subtract(shared);
-		Fraction additionalPart1 = debt1().compareTo(shared) > 0 ? estateLeft
+		Fraction estateLeft = estate.subtract(shared);
+		Fraction additionalPart1 = debt1.compareTo(shared) > 0 ? estateLeft
 				: Fraction.ZERO;
-		Fraction additionalPart2 = debt2().compareTo(shared) > 0 ? estateLeft
+		Fraction additionalPart2 = debt2.compareTo(shared) > 0 ? estateLeft
 				: Fraction.ZERO;
 		payment1 = sharedPart.add(additionalPart1);
 		payment2 = sharedPart.add(additionalPart2);
@@ -79,17 +79,5 @@ public class SimpleDividerTest {
 			if (fractions[i].compareTo(min) < 0)
 				min = fractions[i];
 		return min;
-	}
-
-	private Fraction estate() {
-		return estate;
-	}
-
-	private Fraction debt1() {
-		return debt1;
-	}
-
-	private Fraction debt2() {
-		return debt2;
 	}
 }
