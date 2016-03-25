@@ -1,5 +1,6 @@
 package eu.vytenis.debts;
 
+import static java.util.Arrays.fill;
 import static java.util.Arrays.stream;
 
 import org.apache.commons.math3.fraction.Fraction;
@@ -7,13 +8,15 @@ import org.apache.commons.math3.fraction.Fraction;
 public class Splitter {
 	private final Fraction estate;
 	private final Fraction[] debts;
+	private final Fraction[] payments;
 	private final int n;
-	private Fraction[] payments;
 
 	public Splitter(Fraction estate, Fraction[] debts) {
 		this.estate = estate;
 		this.debts = debts;
-		n = debts.length;
+		this.n = debts.length;
+		this.payments = new Fraction[n];
+		fill(payments, Fraction.ZERO);
 	}
 
 	public Fraction[] split() {
@@ -25,20 +28,26 @@ public class Splitter {
 	}
 
 	private void repayAll() {
-		payments = debts;
+		for (int i = 0; i < n; ++i)
+			payments[i] = debts[i];
 	}
 
 	private void repayPart() {
 		Fraction shared = min(min(debts), estate);
-		Fraction lowerPart = shared.divide(n);
+		Fraction lowerPart = shared.divide(debts.length);
 		Fraction estateLeft = estate.subtract(shared);
-		Fraction[] upperParts = new Fraction[n];
-		for (int i = 0; i < n; ++i)
+		Fraction[] upperParts = new Fraction[debts.length];
+		for (int i = 0; i < debts.length; ++i)
 			upperParts[i] = debts[i].compareTo(shared) > 0 ? estateLeft
 					: Fraction.ZERO;
-		payments = new Fraction[n];
-		for (int i = 0; i < n; ++i)
-			payments[i] = lowerPart.add(upperParts[i]);
+		for (int i = 0; i < debts.length; ++i)
+			add(i, lowerPart);
+		for (int i = 0; i < debts.length; ++i)
+			add(i, upperParts[i]);
+	}
+
+	private void add(int i, Fraction amount) {
+		payments[i] = payments[i].add(amount);
 	}
 
 	private Fraction min(Fraction... fractions) {
