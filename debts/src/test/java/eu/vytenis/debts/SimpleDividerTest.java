@@ -1,10 +1,16 @@
 package eu.vytenis.debts;
 
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
+
+import java.util.List;
 
 import org.apache.commons.math3.fraction.Fraction;
 import org.apache.commons.math3.fraction.ProperFractionFormat;
 import org.junit.Test;
+
+import com.google.common.base.Joiner;
 
 // http://mindyourdecisions.com/blog/2008/06/10/how-game-theory-solved-a-religious-mystery/
 // https://www.youtube.com/watch?v=f4dA4BTv7KQ
@@ -14,8 +20,8 @@ public class SimpleDividerTest {
 	private Fraction estate;
 	private Fraction debt1 = Fraction.ZERO.add(100);
 	private Fraction debt2 = Fraction.ZERO.add(300);
-	private Fraction payment1;
-	private Fraction payment2;
+	private Fraction[] debts = { debt1, debt2 };
+	private Fraction[] payments;
 
 	@Test
 	public void enoughForAll() {
@@ -46,8 +52,8 @@ public class SimpleDividerTest {
 	}
 
 	private void assertPayments(String expectedPayments) {
-		String actual = String.format("%s, %s", format(payment1),
-				format(payment2));
+		List<String> s = stream(payments).map(this::format).collect(toList());
+		String actual = Joiner.on(", ").join(s);
 		assertEquals(expectedPayments, actual);
 	}
 
@@ -65,20 +71,20 @@ public class SimpleDividerTest {
 	}
 
 	private void repayAll() {
-		payment1 = debt1;
-		payment2 = debt2;
+		payments = debts;
 	}
 
 	private void repayPart() {
-		Fraction shared = min(debt1, debt2, estate);
+		Fraction shared = min(min(debts), estate);
 		Fraction sharedPart = shared.divide(Fraction.TWO);
 		Fraction estateLeft = estate.subtract(shared);
 		Fraction additionalPart1 = debt1.compareTo(shared) > 0 ? estateLeft
 				: Fraction.ZERO;
 		Fraction additionalPart2 = debt2.compareTo(shared) > 0 ? estateLeft
 				: Fraction.ZERO;
-		payment1 = sharedPart.add(additionalPart1);
-		payment2 = sharedPart.add(additionalPart2);
+		payments = new Fraction[debts.length];
+		payments[0] = sharedPart.add(additionalPart1);
+		payments[1] = sharedPart.add(additionalPart2);
 	}
 
 	private Fraction min(Fraction... fractions) {
