@@ -2,6 +2,11 @@ package eu.vytenis.debts;
 
 import static java.util.Arrays.fill;
 import static java.util.Arrays.stream;
+import static java.util.Collections.sort;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import org.apache.commons.math3.fraction.Fraction;
 
@@ -10,6 +15,7 @@ public class Splitter {
 	private final Fraction[] debts;
 	private final Fraction[] payments;
 	private final int n;
+	private final List<Integer> indexesFromSmallestDebt = new ArrayList<>();
 
 	public Splitter(Fraction estate, Fraction[] debts) {
 		this.estate = estate;
@@ -17,6 +23,18 @@ public class Splitter {
 		this.n = debts.length;
 		this.payments = new Fraction[n];
 		fill(payments, Fraction.ZERO);
+		orderFromSmallest();
+	}
+
+	private void orderFromSmallest() {
+		for (int i = 0; i < n; ++i)
+			indexesFromSmallestDebt.add(i);
+		sort(indexesFromSmallestDebt, new Comparator<Integer>() {
+			@Override
+			public int compare(Integer i1, Integer i2) {
+				return debts[i1].compareTo(debts[i2]);
+			}
+		});
 	}
 
 	public Fraction[] split() {
