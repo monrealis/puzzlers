@@ -40,6 +40,14 @@ public class SimpleDividerTest {
 		assertEquals("75", payment2.toString());
 	}
 
+	@Test
+	public void example3() {
+		estate = 200;
+		split();
+		assertEquals("50", payment1.toString());
+		assertEquals("150", payment2.toString());
+	}
+
 	private void split() {
 		if (debt1().add(debt2()).compareTo(estate()) <= 0)
 			repayAll();
