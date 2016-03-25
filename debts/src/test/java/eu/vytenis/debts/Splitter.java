@@ -7,11 +7,13 @@ import org.apache.commons.math3.fraction.Fraction;
 public class Splitter {
 	private final Fraction estate;
 	private final Fraction[] debts;
+	private final int n;
 	private Fraction[] payments;
 
 	public Splitter(Fraction estate, Fraction[] debts) {
 		this.estate = estate;
 		this.debts = debts;
+		n = debts.length;
 	}
 
 	public Fraction[] split() {
@@ -28,14 +30,14 @@ public class Splitter {
 
 	private void repayPart() {
 		Fraction shared = min(min(debts), estate);
-		Fraction lowerPart = shared.divide(debts.length);
+		Fraction lowerPart = shared.divide(n);
 		Fraction estateLeft = estate.subtract(shared);
-		Fraction[] upperParts = new Fraction[debts.length];
-		for (int i = 0; i < debts.length; ++i)
+		Fraction[] upperParts = new Fraction[n];
+		for (int i = 0; i < n; ++i)
 			upperParts[i] = debts[i].compareTo(shared) > 0 ? estateLeft
 					: Fraction.ZERO;
-		payments = new Fraction[debts.length];
-		for (int i = 0; i < debts.length; ++i)
+		payments = new Fraction[n];
+		for (int i = 0; i < n; ++i)
 			payments[i] = lowerPart.add(upperParts[i]);
 	}
 
