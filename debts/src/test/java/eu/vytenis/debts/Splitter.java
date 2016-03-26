@@ -41,30 +41,43 @@ public class Splitter {
 	}
 
 	public Fraction[] split() {
-		if (sum(debts).compareTo(estate) <= 0)
-			repayAll();
-		else
-			repayPart();
+		repayLowerHalf();
+		repayUpperHalf();
 		return payments;
 	}
 
-	private void repayAll() {
-		for (int i = 0; i < n; ++i)
-			payments[i] = debts[i];
+	private void repayLowerHalf() {
+		while (!indexesFromSmallestDebt.isEmpty()) {
+			int index = indexesFromSmallestDebt.get(0);
+			Fraction half = originalDebts[index].divide(2).subtract(
+					payments[index]);
+			Fraction remainingForEach = estate.divide(indexesFromSmallestDebt
+					.size());
+			Fraction min = min(half, remainingForEach);
+			for (int i : indexesFromSmallestDebt)
+				add(i, min);
+			indexesFromSmallestDebt.remove(0);
+		}
 	}
 
-	private void repayPart() {
-		Fraction shared = min(min(debts), estate);
-		Fraction lowerPart = shared.divide(debts.length);
-		Fraction estateLeft = estate.subtract(shared);
-		Fraction[] upperParts = new Fraction[debts.length];
-		for (int i = 0; i < debts.length; ++i)
-			upperParts[i] = debts[i].compareTo(shared) > 0 ? estateLeft
-					: Fraction.ZERO;
-		for (int i = 0; i < debts.length; ++i)
-			add(i, lowerPart);
-		for (int i = 0; i < debts.length; ++i)
-			add(i, upperParts[i]);
+	private void repayUpperHalf() {
+		for (int ii = 0; ii < n; ++ii) {
+			int index = indexesFromGreatestDebt.get(ii);
+			boolean last = ii == n - 1;
+			Fraction remaining;
+			if (last)
+				remaining = originalDebts[index].subtract(payments[index]);
+			else {
+				int nextIndex = indexesFromGreatestDebt.get(ii + 1);
+				remaining = originalDebts[index].subtract(
+						originalDebts[nextIndex]).divide(2);
+
+			}
+			Fraction remainingForEach = estate.divide(ii + 1);
+			Fraction min = min(remaining, remainingForEach);
+			for (int j = 0; j <= ii; ++j)
+				add(indexesFromGreatestDebt.get(j), min);
+		}
 	}
 
 	private void add(int i, Fraction amount) {
