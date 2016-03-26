@@ -49,8 +49,7 @@ public class Splitter {
 			int index = indexesFromSmallestDebt.get(ii);
 			Fraction half = originalDebts[index].divide(2).subtract(
 					payments[index]);
-			Fraction remainingForEach = estate.divide(indexesFromSmallestDebt
-					.size());
+			Fraction remainingForEach = estate.divide(n - ii);
 			Fraction min = min(half, remainingForEach);
 			for (int j = ii; j < n; ++j)
 				add(j, min);
