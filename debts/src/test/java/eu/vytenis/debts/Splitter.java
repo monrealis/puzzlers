@@ -93,10 +93,6 @@ public class Splitter {
 			return f2;
 	}
 
-	private static Fraction sumOfTwo(Fraction f1, Fraction f2) {
-		return f1.add(f2);
-	}
-
 	private final class ByDebtComparator implements Comparator<Integer> {
 		@Override
 		public int compare(Integer i1, Integer i2) {
