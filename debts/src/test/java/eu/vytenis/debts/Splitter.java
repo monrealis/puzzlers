@@ -88,10 +88,6 @@ public class Splitter {
 		return stream(fractions).reduce(Splitter::minOfTwo).get();
 	}
 
-	private Fraction sum(Fraction... fractions) {
-		return stream(fractions).reduce(Fraction.ZERO, Splitter::sumOfTwo);
-	}
-
 	private static Fraction minOfTwo(Fraction f1, Fraction f2) {
 		if (f1.compareTo(f2) <= 0)
 			return f1;
