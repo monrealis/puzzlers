@@ -18,7 +18,6 @@ public class Splitter {
 	private final Fraction[] payments;
 	private final int n;
 	private final List<Integer> indexesFromSmallestDebt;
-	private final List<Integer> indexesFromGreatestDebt;
 
 	public Splitter(Fraction estate, Fraction[] debts) {
 		this.estate = estate;
@@ -29,7 +28,6 @@ public class Splitter {
 		fill(payments, Fraction.ZERO);
 		ByDebtComparator c = new ByDebtComparator();
 		indexesFromSmallestDebt = orderDebtors(c);
-		indexesFromGreatestDebt = orderDebtors(c.reversed());
 	}
 
 	private List<Integer> orderDebtors(Comparator<Integer> comparator) {
@@ -60,22 +58,22 @@ public class Splitter {
 	}
 
 	private void repayUpperHalf() {
-		for (int ii = 0; ii < n; ++ii) {
-			int index = indexesFromGreatestDebt.get(ii);
-			boolean last = ii == n - 1;
+		for (int ii = n - 1; ii >= 0; --ii) {
+			int index = indexesFromSmallestDebt.get(ii);
+			boolean last = ii == 0;
 			Fraction remaining;
 			if (last)
 				remaining = originalDebts[index].subtract(payments[index]);
 			else {
-				int nextIndex = indexesFromGreatestDebt.get(ii + 1);
+				int nextIndex = indexesFromSmallestDebt.get(ii - 1);
 				remaining = originalDebts[index].subtract(
 						originalDebts[nextIndex]).divide(2);
 
 			}
-			Fraction remainingForEach = estate.divide(ii + 1);
+			Fraction remainingForEach = estate.divide(n - ii);
 			Fraction min = min(remaining, remainingForEach);
-			for (int j = 0; j <= ii; ++j)
-				add(indexesFromGreatestDebt.get(j), min);
+			for (int j = ii; j < n; ++j)
+				add(indexesFromSmallestDebt.get(j), min);
 		}
 	}
 
