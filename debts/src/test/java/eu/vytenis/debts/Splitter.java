@@ -47,16 +47,15 @@ public class Splitter {
 	}
 
 	private void repayLowerHalf() {
-		while (!indexesFromSmallestDebt.isEmpty()) {
-			int index = indexesFromSmallestDebt.get(0);
+		for (int ii = 0; ii < n; ++ii) {
+			int index = indexesFromSmallestDebt.get(ii);
 			Fraction half = originalDebts[index].divide(2).subtract(
 					payments[index]);
 			Fraction remainingForEach = estate.divide(indexesFromSmallestDebt
 					.size());
 			Fraction min = min(half, remainingForEach);
-			for (int i : indexesFromSmallestDebt)
-				add(i, min);
-			indexesFromSmallestDebt.remove(0);
+			for (int j = ii; j < n; ++j)
+				add(j, min);
 		}
 	}
 
