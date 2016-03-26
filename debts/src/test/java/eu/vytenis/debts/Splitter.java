@@ -1,5 +1,6 @@
 package eu.vytenis.debts;
 
+import static java.util.Arrays.copyOf;
 import static java.util.Arrays.fill;
 import static java.util.Arrays.stream;
 import static java.util.Collections.sort;
@@ -12,6 +13,7 @@ import org.apache.commons.math3.fraction.Fraction;
 
 public class Splitter {
 	private Fraction estate;
+	private final Fraction[] originalDebts;
 	private final Fraction[] debts;
 	private final Fraction[] payments;
 	private final int n;
@@ -20,7 +22,8 @@ public class Splitter {
 
 	public Splitter(Fraction estate, Fraction[] debts) {
 		this.estate = estate;
-		this.debts = debts;
+		this.debts = copyOf(debts, debts.length);
+		this.originalDebts = copyOf(debts, debts.length);
 		this.n = debts.length;
 		this.payments = new Fraction[n];
 		fill(payments, Fraction.ZERO);
