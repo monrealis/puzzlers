@@ -4,6 +4,7 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math3.fraction.Fraction;
@@ -47,6 +48,21 @@ public class SplitterTest {
 		estate = new Fraction(200);
 		split();
 		assertPayments("50, 150");
+	}
+
+	@Test
+	public void tableRow1() {
+		debts = fractions(100, 200, 300);
+		estate = new Fraction(50, 1);
+		split();
+		assertPayments("16 2 / 3, 16 2 / 3, 16 2 / 3");
+	}
+
+	private Fraction[] fractions(int... sums) {
+		Fraction[] r = new Fraction[sums.length];
+		for (int i = 0; i < sums.length; ++i)
+			r[i] = new Fraction(sums[i] / 1);
+		return r;
 	}
 
 	private void split() {
