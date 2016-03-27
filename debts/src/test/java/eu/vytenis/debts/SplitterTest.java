@@ -4,7 +4,6 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math3.fraction.Fraction;
@@ -19,12 +18,12 @@ import com.google.common.base.Joiner;
 public class SplitterTest {
 	private ProperFractionFormat format = new ProperFractionFormat();
 	private Fraction estate;
-	private Fraction[] debts = { Fraction.ZERO.add(100), Fraction.ZERO.add(300) };
+	private Fraction[] debts = { fraction(100), fraction(300) };
 	private Fraction[] payments;
 
 	@Test
 	public void enoughForAll() {
-		estate = new Fraction(500, 1);
+		estate = fraction(500);
 		split();
 		assertPayments("100, 300");
 	}
@@ -56,6 +55,10 @@ public class SplitterTest {
 		estate = new Fraction(50, 1);
 		split();
 		assertPayments("16 2 / 3, 16 2 / 3, 16 2 / 3");
+	}
+
+	private Fraction fraction(int sum) {
+		return Fraction.ZERO.add(sum);
 	}
 
 	private Fraction[] fractions(int... sums) {
