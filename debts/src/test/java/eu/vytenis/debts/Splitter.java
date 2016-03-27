@@ -79,23 +79,31 @@ public class Splitter {
 		}
 
 		public void split() {
-			Fraction remaining = getSumToPay();
-			Fraction remainingForEach = estate.divide(n - sortedPayeeIndex);
-			Fraction min = min(remaining, remainingForEach);
+			Fraction sum = getSumToPayInThisIteration();
+			Fraction remainingSum = getMaxSumToPayRemainingForEachPerson();
+			Fraction payedSum = min(sum, remainingSum);
 			for (int j = sortedPayeeIndex; j < n; ++j)
-				add(sortedPayeeIndexes.get(j), min);
+				add(sortedPayeeIndexes.get(j), payedSum);
 		}
 
-		private Fraction getSumToPay() {
-			int index = sortedPayeeIndexes.get(sortedPayeeIndex);
-			Fraction remaining;
+		private Fraction getSumToPayInThisIteration() {
 			if (isLast())
-				remaining = debts[index].subtract(payments[index]);
+				return debts[index()].subtract(payments[index()]);
 			else {
-				int nextIndex = sortedPayeeIndexes.get(sortedPayeeIndex - 1);
-				remaining = debts[index].subtract(debts[nextIndex]).divide(2);
+				return debts[index()].subtract(debts[nextIndex()]).divide(2);
 			}
-			return remaining;
+		}
+
+		private Fraction getMaxSumToPayRemainingForEachPerson() {
+			return estate.divide(n - sortedPayeeIndex);
+		}
+
+		private Integer index() {
+			return sortedPayeeIndexes.get(sortedPayeeIndex);
+		}
+
+		private Integer nextIndex() {
+			return sortedPayeeIndexes.get(sortedPayeeIndex - 1);
 		}
 
 		private boolean isLast() {
