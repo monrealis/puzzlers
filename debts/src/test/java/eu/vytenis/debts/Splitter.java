@@ -44,6 +44,18 @@ public class Splitter {
 
 	private void repayLowerHalf() {
 		for (int ii = 0; ii < n; ++ii) {
+			new LowerPartSplitter(ii).split();
+		}
+	}
+
+	private class LowerPartSplitter {
+		private final int ii;
+
+		public LowerPartSplitter(int ii) {
+			this.ii = ii;
+		}
+
+		public void split() {
 			int index = indexesFromSmallestDebt.get(ii);
 			Fraction half = debts[index].divide(2).subtract(payments[index]);
 			Fraction remainingForEach = estate.divide(n - ii);
@@ -51,10 +63,23 @@ public class Splitter {
 			for (int j = ii; j < n; ++j)
 				add(j, min);
 		}
+
 	}
 
 	private void repayUpperHalf() {
 		for (int ii = n - 1; ii >= 0; --ii) {
+			new UpperPartSplitter(ii).split();
+		}
+	}
+
+	private class UpperPartSplitter {
+		private final int ii;
+
+		public UpperPartSplitter(int ii) {
+			this.ii = ii;
+		}
+
+		public void split() {
 			int index = indexesFromSmallestDebt.get(ii);
 			boolean last = ii == 0;
 			Fraction remaining;
