@@ -36,14 +36,36 @@ public class Splitter {
 	}
 
 	public Fraction[] split() {
-		repayLowerHalf();
-		repayUpperHalf();
+		payLowerHalf();
+		payUpperHalf();
 		return payments;
 	}
 
-	private void repayLowerHalf() {
+	private void payLowerHalf() {
 		for (int i = 0; i < n; ++i)
 			new LowerPartPayer(i).split();
+	}
+
+	private void payUpperHalf() {
+		for (int i = n - 1; i >= 0; --i) {
+			new UpperPartPayer(i).split();
+		}
+	}
+
+	private void add(int i, Fraction amount) {
+		payments[i] = payments[i].add(amount);
+		estate = estate.subtract(amount);
+	}
+
+	private Fraction min(Fraction... fractions) {
+		return stream(fractions).reduce(Splitter::minOfTwo).get();
+	}
+
+	private static Fraction minOfTwo(Fraction f1, Fraction f2) {
+		if (f1.compareTo(f2) <= 0)
+			return f1;
+		else
+			return f2;
 	}
 
 	private class LowerPartPayer {
@@ -79,12 +101,6 @@ public class Splitter {
 		private void payForEach(Fraction sumToPay) {
 			for (int j = sortedPayeeIndex; j < n; ++j)
 				add(j, sumToPay);
-		}
-	}
-
-	private void repayUpperHalf() {
-		for (int i = n - 1; i >= 0; --i) {
-			new UpperPartPayer(i).split();
 		}
 	}
 
@@ -133,22 +149,6 @@ public class Splitter {
 		private boolean isLast() {
 			return sortedPayeeIndex == 0;
 		}
-	}
-
-	private void add(int i, Fraction amount) {
-		payments[i] = payments[i].add(amount);
-		estate = estate.subtract(amount);
-	}
-
-	private Fraction min(Fraction... fractions) {
-		return stream(fractions).reduce(Splitter::minOfTwo).get();
-	}
-
-	private static Fraction minOfTwo(Fraction f1, Fraction f2) {
-		if (f1.compareTo(f2) <= 0)
-			return f1;
-		else
-			return f2;
 	}
 
 	private final class ByDebtComparator implements Comparator<Integer> {
