@@ -55,12 +55,32 @@ public class Splitter {
 		}
 
 		public void split() {
-			int index = sortedPayeeIndexes.get(sortedPayeeIndex);
-			Fraction half = debts[index].divide(2).subtract(payments[index]);
-			Fraction remainingForEach = estate.divide(n - sortedPayeeIndex);
-			Fraction min = min(half, remainingForEach);
+			payForEach(getSumToPay());
+		}
+
+		private Fraction getSumToPay() {
+			Fraction sum = getSumToPayInThisIteration();
+			Fraction remainingSum = getMaxSumToPayRemainingForEachPerson();
+			return min(sum, remainingSum);
+		}
+
+		private Fraction getSumToPayInThisIteration() {
+			Fraction half = debts[index()].divide(2)
+					.subtract(payments[index()]);
+			return half;
+		}
+
+		private int index() {
+			return sortedPayeeIndexes.get(sortedPayeeIndex);
+		}
+
+		private Fraction getMaxSumToPayRemainingForEachPerson() {
+			return estate.divide(n - sortedPayeeIndex);
+		}
+
+		private void payForEach(Fraction sumToPay) {
 			for (int j = sortedPayeeIndex; j < n; ++j)
-				add(j, min);
+				add(j, sumToPay);
 		}
 
 	}
@@ -79,9 +99,16 @@ public class Splitter {
 		}
 
 		public void split() {
+			payForEach(getSumToPay());
+		}
+
+		private Fraction getSumToPay() {
 			Fraction sum = getSumToPayInThisIteration();
 			Fraction remainingSum = getMaxSumToPayRemainingForEachPerson();
-			Fraction payedSum = min(sum, remainingSum);
+			return min(sum, remainingSum);
+		}
+
+		private void payForEach(Fraction payedSum) {
 			for (int j = sortedPayeeIndex; j < n; ++j)
 				add(sortedPayeeIndexes.get(j), payedSum);
 		}
