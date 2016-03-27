@@ -42,9 +42,8 @@ public class Splitter {
 	}
 
 	private void repayLowerHalf() {
-		for (int ii = 0; ii < n; ++ii) {
-			new LowerPartPayer(ii).split();
-		}
+		for (int i = 0; i < n; ++i)
+			new LowerPartPayer(i).split();
 	}
 
 	private class LowerPartPayer {
@@ -65,8 +64,7 @@ public class Splitter {
 		}
 
 		private Fraction getSumToPayInThisIteration() {
-			Fraction half = debts[index()].divide(2)
-					.subtract(payments[index()]);
+			Fraction half = debts[index()].divide(2).subtract(payments[index()]);
 			return half;
 		}
 
@@ -82,12 +80,11 @@ public class Splitter {
 			for (int j = sortedPayeeIndex; j < n; ++j)
 				add(j, sumToPay);
 		}
-
 	}
 
 	private void repayUpperHalf() {
-		for (int ii = n - 1; ii >= 0; --ii) {
-			new UpperPartPayer(ii).split();
+		for (int i = n - 1; i >= 0; --i) {
+			new UpperPartPayer(i).split();
 		}
 	}
 
