@@ -13,7 +13,6 @@ import org.apache.commons.math3.fraction.Fraction;
 
 public class Splitter {
 	private Fraction estate;
-	private final Fraction[] originalDebts;
 	private final Fraction[] debts;
 	private final Fraction[] payments;
 	private final int n;
@@ -22,7 +21,6 @@ public class Splitter {
 	public Splitter(Fraction estate, Fraction[] debts) {
 		this.estate = estate;
 		this.debts = copyOf(debts, debts.length);
-		this.originalDebts = copyOf(debts, debts.length);
 		this.n = debts.length;
 		this.payments = new Fraction[n];
 		fill(payments, Fraction.ZERO);
@@ -47,8 +45,7 @@ public class Splitter {
 	private void repayLowerHalf() {
 		for (int ii = 0; ii < n; ++ii) {
 			int index = indexesFromSmallestDebt.get(ii);
-			Fraction half = originalDebts[index].divide(2).subtract(
-					payments[index]);
+			Fraction half = debts[index].divide(2).subtract(payments[index]);
 			Fraction remainingForEach = estate.divide(n - ii);
 			Fraction min = min(half, remainingForEach);
 			for (int j = ii; j < n; ++j)
@@ -62,11 +59,10 @@ public class Splitter {
 			boolean last = ii == 0;
 			Fraction remaining;
 			if (last)
-				remaining = originalDebts[index].subtract(payments[index]);
+				remaining = debts[index].subtract(payments[index]);
 			else {
 				int nextIndex = indexesFromSmallestDebt.get(ii - 1);
-				remaining = originalDebts[index].subtract(
-						originalDebts[nextIndex]).divide(2);
+				remaining = debts[index].subtract(debts[nextIndex]).divide(2);
 
 			}
 			Fraction remainingForEach = estate.divide(n - ii);
