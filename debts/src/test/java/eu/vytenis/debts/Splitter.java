@@ -11,6 +11,9 @@ import java.util.List;
 
 import org.apache.commons.math3.fraction.Fraction;
 
+//http://mindyourdecisions.com/blog/2008/06/10/how-game-theory-solved-a-religious-mystery/
+//https://www.youtube.com/watch?v=f4dA4BTv7KQ
+//http://www.biu.ac.il/soc/ec/jlwecon/wp/2.%20AumannGame%20-%20bulletin.pdf
 public class Splitter {
 	private Fraction estate;
 	private final Fraction[] debts;

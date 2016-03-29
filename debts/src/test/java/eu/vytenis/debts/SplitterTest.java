@@ -3,9 +3,6 @@ package eu.vytenis.debts;
 import org.apache.commons.math3.fraction.Fraction;
 import org.junit.Test;
 
-// http://mindyourdecisions.com/blog/2008/06/10/how-game-theory-solved-a-religious-mystery/
-// https://www.youtube.com/watch?v=f4dA4BTv7KQ
-// http://www.biu.ac.il/soc/ec/jlwecon/wp/2.%20AumannGame%20-%20bulletin.pdf
 public class SplitterTest extends BaseSplitterTest {
 	public SplitterTest() {
 		debts = fractions(100, 300);
