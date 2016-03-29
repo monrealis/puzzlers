@@ -14,7 +14,7 @@ import com.google.common.base.Joiner;
 public abstract class BaseSplitterTest {
 	ProperFractionFormat format = new ProperFractionFormat();
 	Fraction estate;
-	Fraction[] debts = { fraction(100), fraction(300) };
+	Fraction[] debts;
 	Fraction[] payments;
 
 	Fraction fraction(int sum) {
