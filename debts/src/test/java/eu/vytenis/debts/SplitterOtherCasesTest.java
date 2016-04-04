@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.apache.commons.math3.fraction.Fraction;
 import org.junit.Test;
 
-public class SplitterOtherCasesTest extends BaseSplitterTest {
+public class SplitterOtherCasesTest extends SplitterFixture {
 	@Test
 	public void splits500For3() {
 		estate = fraction(500);

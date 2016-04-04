@@ -11,7 +11,7 @@ import org.apache.commons.math3.fraction.ProperFractionFormat;
 
 import com.google.common.base.Joiner;
 
-public abstract class BaseSplitterTest {
+public abstract class SplitterFixture {
 	ProperFractionFormat format = new ProperFractionFormat();
 	Fraction estate;
 	Fraction[] debts;

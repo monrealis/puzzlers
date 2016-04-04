@@ -3,8 +3,8 @@ package eu.vytenis.debts;
 import org.apache.commons.math3.fraction.Fraction;
 import org.junit.Test;
 
-public class SplitterTest extends BaseSplitterTest {
-	public SplitterTest() {
+public class SplitterBlogPostTest extends SplitterFixture {
+	public SplitterBlogPostTest() {
 		debts = fractions(100, 300);
 	}
 

@@ -2,8 +2,8 @@ package eu.vytenis.debts;
 
 import org.junit.Test;
 
-public class SplitterTableTest extends BaseSplitterTest {
-	public SplitterTableTest() {
+public class SplitterArticleTableTest extends SplitterFixture {
+	public SplitterArticleTableTest() {
 		debts = fractions(100, 200, 300);
 	}
 
