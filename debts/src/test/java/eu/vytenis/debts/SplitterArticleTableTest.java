@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class SplitterArticleTableTest extends SplitterFixture {
 	public SplitterArticleTableTest() {
-		debts = fractions(100, 200, 300);
+		claims = fractions(100, 200, 300);
 	}
 
 	@Test

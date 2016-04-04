@@ -14,7 +14,7 @@ import com.google.common.base.Joiner;
 public abstract class SplitterFixture {
 	ProperFractionFormat format = new ProperFractionFormat();
 	Fraction estate;
-	Fraction[] debts;
+	Fraction[] claims;
 	Fraction[] payments;
 
 	Fraction fraction(int sum) {
@@ -34,7 +34,7 @@ public abstract class SplitterFixture {
 	}
 
 	void split() {
-		payments = new Splitter(estate, debts).split();
+		payments = new Splitter(estate, claims).split();
 	}
 
 	void assertPayments(String expectedPayments) {

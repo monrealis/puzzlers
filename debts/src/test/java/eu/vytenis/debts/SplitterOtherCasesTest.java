@@ -10,14 +10,14 @@ public class SplitterOtherCasesTest extends SplitterFixture {
 	@Test
 	public void splits500For3() {
 		estate = fraction(500);
-		debts = fractions(200, 200, 200);
+		claims = fractions(200, 200, 200);
 		splitAssert("166 2 / 3, 166 2 / 3, 166 2 / 3");
 	}
 
 	@Test
 	public void splits500For4() {
 		estate = fraction(500);
-		debts = fractions(200, 300, 300, 350);
+		claims = fractions(200, 300, 300, 350);
 		split();
 		assertPaymentsAreInAscendingOrder();
 		assertAllEstateDivided();

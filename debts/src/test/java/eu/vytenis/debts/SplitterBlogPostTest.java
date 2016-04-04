@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class SplitterBlogPostTest extends SplitterFixture {
 	public SplitterBlogPostTest() {
-		debts = fractions(100, 300);
+		claims = fractions(100, 300);
 	}
 
 	@Test

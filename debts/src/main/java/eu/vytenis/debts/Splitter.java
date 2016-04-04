@@ -16,26 +16,26 @@ import org.apache.commons.math3.fraction.Fraction;
 //http://www.biu.ac.il/soc/ec/jlwecon/wp/2.%20AumannGame%20-%20bulletin.pdf
 public class Splitter {
 	private Fraction estate;
-	private final Fraction[] debts;
+	private final Fraction[] claims;
 	private final Fraction[] payments;
 	private final int n;
 	private final List<Integer> sortedPayeeIndexes;
 
-	public Splitter(Fraction estate, Fraction[] debts) {
+	public Splitter(Fraction estate, Fraction[] claims) {
 		this.estate = estate;
-		this.debts = copyOf(debts, debts.length);
-		this.n = debts.length;
+		this.claims = copyOf(claims, claims.length);
+		this.n = claims.length;
 		this.payments = new Fraction[n];
 		fill(payments, Fraction.ZERO);
 		sortedPayeeIndexes = getSortedPayeeIndexesFromSmallest();
 	}
 
 	private List<Integer> getSortedPayeeIndexesFromSmallest() {
-		List<Integer> debtorIndexes = new LinkedList<>();
+		List<Integer> payeeIndexes = new LinkedList<>();
 		for (int i = 0; i < n; ++i)
-			debtorIndexes.add(i);
-		sort(debtorIndexes, new ByDebtComparator());
-		return debtorIndexes;
+			payeeIndexes.add(i);
+		sort(payeeIndexes, new PayeeIndexByClaimComparator(claims));
+		return payeeIndexes;
 	}
 
 	public Fraction[] split() {
@@ -50,9 +50,8 @@ public class Splitter {
 	}
 
 	private void payUpperHalf() {
-		for (int i = n - 1; i >= 0; --i) {
+		for (int i = n - 1; i >= 0; --i)
 			new UpperPartPayer(i).split();
-		}
 	}
 
 	private void add(int i, Fraction amount) {
@@ -89,7 +88,7 @@ public class Splitter {
 		}
 
 		private Fraction getSumToPayInThisIteration() {
-			Fraction half = debts[index()].divide(2).subtract(payments[index()]);
+			Fraction half = claims[index()].divide(2).subtract(payments[index()]);
 			return half;
 		}
 
@@ -131,10 +130,9 @@ public class Splitter {
 
 		private Fraction getSumToPayInThisIteration() {
 			if (isLast())
-				return debts[index()].subtract(payments[index()]);
-			else {
-				return debts[index()].subtract(debts[nextIndex()]).divide(2);
-			}
+				return claims[index()].subtract(payments[index()]);
+			else
+				return claims[index()].subtract(claims[nextIndex()]).divide(2);
 		}
 
 		private Fraction getMaxSumToPayRemainingForEachPerson() {
@@ -154,10 +152,16 @@ public class Splitter {
 		}
 	}
 
-	private final class ByDebtComparator implements Comparator<Integer> {
+	private final class PayeeIndexByClaimComparator implements Comparator<Integer> {
+		private final Fraction[] claims;
+
+		public PayeeIndexByClaimComparator(Fraction[] claims) {
+			this.claims = claims;
+		}
+
 		@Override
 		public int compare(Integer index1, Integer index2) {
-			return debts[index1].compareTo(debts[index2]);
+			return claims[index1].compareTo(claims[index2]);
 		}
 	}
 }
