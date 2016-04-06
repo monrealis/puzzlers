@@ -2,7 +2,6 @@ package eu.vytenis.debts;
 
 import static java.util.Arrays.copyOf;
 import static java.util.Arrays.fill;
-import static java.util.Arrays.stream;
 import static java.util.Collections.sort;
 
 import java.util.Comparator;
@@ -59,17 +58,6 @@ public class Splitter {
 		estate = estate.subtract(amount);
 	}
 
-	private Fraction min(Fraction... fractions) {
-		return stream(fractions).reduce(Splitter::minOfTwo).get();
-	}
-
-	private static Fraction minOfTwo(Fraction f1, Fraction f2) {
-		if (f1.compareTo(f2) <= 0)
-			return f1;
-		else
-			return f2;
-	}
-
 	private class LowerPartPayer {
 		private final int sortedPayeeIndex;
 
@@ -84,7 +72,7 @@ public class Splitter {
 		private Fraction getSumToPay() {
 			Fraction sum = getSumToPayInThisIteration();
 			Fraction remainingSum = getMaxSumToPayRemainingForEachPerson();
-			return min(sum, remainingSum);
+			return Fractions.min(sum, remainingSum);
 		}
 
 		private Fraction getSumToPayInThisIteration() {
@@ -120,7 +108,7 @@ public class Splitter {
 		private Fraction getSumToPay() {
 			Fraction sum = getSumToPayInThisIteration();
 			Fraction remainingSum = getMaxSumToPayRemainingForEachPerson();
-			return min(sum, remainingSum);
+			return Fractions.min(sum, remainingSum);
 		}
 
 		private void payForEach(Fraction payedSum) {
