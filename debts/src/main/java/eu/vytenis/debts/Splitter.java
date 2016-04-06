@@ -17,21 +17,19 @@ public class Splitter {
 	private Fraction estate;
 	private final Fraction[] claims;
 	private final Fraction[] payments;
-	private final int n;
 	private final List<Integer> sortedPayeeIndexes;
 
 	public Splitter(Fraction estate, Fraction[] claims) {
 		this.estate = estate;
 		this.claims = copyOf(claims, claims.length);
-		this.n = claims.length;
-		this.payments = new Fraction[n];
+		this.payments = new Fraction[getClaimCount()];
 		fill(payments, Fraction.ZERO);
 		sortedPayeeIndexes = getSortedPayeeIndexesFromSmallest();
 	}
 
 	private List<Integer> getSortedPayeeIndexesFromSmallest() {
 		List<Integer> payeeIndexes = new LinkedList<>();
-		for (int i = 0; i < n; ++i)
+		for (int i = 0; i < getClaimCount(); ++i)
 			payeeIndexes.add(i);
 		sort(payeeIndexes, new PayeeIndexByClaimComparator(claims));
 		return payeeIndexes;
@@ -44,18 +42,22 @@ public class Splitter {
 	}
 
 	private void payLowerHalf() {
-		for (int i = 0; i < n; ++i)
+		for (int i = 0; i < getClaimCount(); ++i)
 			new LowerPartPayer(i).split();
 	}
 
 	private void payUpperHalf() {
-		for (int i = n - 1; i >= 0; --i)
+		for (int i = getClaimCount() - 1; i >= 0; --i)
 			new UpperPartPayer(i).split();
 	}
 
 	private void add(int i, Fraction amount) {
 		payments[i] = payments[i].add(amount);
 		estate = estate.subtract(amount);
+	}
+
+	private int getClaimCount() {
+		return claims.length;
 	}
 
 	private class LowerPartPayer {
@@ -85,11 +87,11 @@ public class Splitter {
 		}
 
 		private Fraction getMaxSumToPayRemainingForEachPerson() {
-			return estate.divide(n - sortedPayeeIndex);
+			return estate.divide(getClaimCount() - sortedPayeeIndex);
 		}
 
 		private void payForEach(Fraction sumToPay) {
-			for (int j = sortedPayeeIndex; j < n; ++j)
+			for (int j = sortedPayeeIndex; j < getClaimCount(); ++j)
 				add(j, sumToPay);
 		}
 	}
@@ -112,7 +114,7 @@ public class Splitter {
 		}
 
 		private void payForEach(Fraction payedSum) {
-			for (int j = sortedPayeeIndex; j < n; ++j)
+			for (int j = sortedPayeeIndex; j < getClaimCount(); ++j)
 				add(sortedPayeeIndexes.get(j), payedSum);
 		}
 
@@ -124,7 +126,7 @@ public class Splitter {
 		}
 
 		private Fraction getMaxSumToPayRemainingForEachPerson() {
-			return estate.divide(n - sortedPayeeIndex);
+			return estate.divide(getClaimCount() - sortedPayeeIndex);
 		}
 
 		private Integer index() {
