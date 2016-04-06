@@ -43,16 +43,16 @@ public class Splitter {
 
 	private void payLowerHalf() {
 		for (int i = 0; i < getClaimCount(); ++i)
-			new LowerPartPayer(i).split();
+			new LowerPartPayer(i).execute();
 	}
 
 	private void payUpperHalf() {
 		for (int i = getClaimCount() - 1; i >= 0; --i)
-			new UpperPartPayer(i).split();
+			new UpperPartPayer(i).execute();
 	}
 
-	private void add(int i, Fraction amount) {
-		payments[i] = payments[i].add(amount);
+	private void pay(int index, Fraction amount) {
+		payments[index] = payments[index].add(amount);
 		estate = estate.subtract(amount);
 	}
 
@@ -67,7 +67,7 @@ public class Splitter {
 			this.sortedPayeeIndex = sortedPayeeIndex;
 		}
 
-		public void split() {
+		public void execute() {
 			payForEach(getSumToPay());
 		}
 
@@ -92,7 +92,7 @@ public class Splitter {
 
 		private void payForEach(Fraction sumToPay) {
 			for (int j = sortedPayeeIndex; j < getClaimCount(); ++j)
-				add(j, sumToPay);
+				pay(j, sumToPay);
 		}
 	}
 
@@ -103,7 +103,7 @@ public class Splitter {
 			this.sortedPayeeIndex = sortedPayeeIndex;
 		}
 
-		public void split() {
+		public void execute() {
 			payForEach(getSumToPay());
 		}
 
@@ -115,7 +115,7 @@ public class Splitter {
 
 		private void payForEach(Fraction payedSum) {
 			for (int j = sortedPayeeIndex; j < getClaimCount(); ++j)
-				add(sortedPayeeIndexes.get(j), payedSum);
+				pay(sortedPayeeIndexes.get(j), payedSum);
 		}
 
 		private Fraction getSumToPayInThisIteration() {
