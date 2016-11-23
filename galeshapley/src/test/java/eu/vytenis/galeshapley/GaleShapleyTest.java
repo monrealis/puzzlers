@@ -3,7 +3,6 @@ package eu.vytenis.galeshapley;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -32,8 +31,6 @@ public class GaleShapleyTest {
 	}
 
 	private void match() {
-		result = new ArrayList<>();
-		for (int i = 0; i < preferencesOfMen.length; ++i)
-			result.add(new Pair(preferencesOfMen[i][0], preferencesOfWomen[i][0]));
+		result = new Matcher(preferencesOfMen, preferencesOfWomen).match();
 	}
 }
