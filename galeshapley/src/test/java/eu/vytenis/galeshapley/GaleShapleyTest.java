@@ -33,8 +33,8 @@ public class GaleShapleyTest {
 	}
 
 	private String getResultString() {
-		List<String> parts = result.stream().map(p -> p.getFirst() + "," + p.getSecond()).collect(toList());
-		return Joiner.on(",").join(parts);
+		List<String> parts = result.stream().map(p -> p.join(",")).collect(toList());
+		return Joiner.on(";").join(parts);
 	}
 
 	private void match() {
