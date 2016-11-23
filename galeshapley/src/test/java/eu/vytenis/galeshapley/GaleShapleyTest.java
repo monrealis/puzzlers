@@ -1,11 +1,13 @@
 package eu.vytenis.galeshapley;
 
-import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
 import org.junit.Test;
+
+import com.google.common.base.Joiner;
 
 //https://www.youtube.com/watch?v=pc5WSJkFk24
 //https://en.wikipedia.org/wiki/Stable_marriage_problem
@@ -19,7 +21,7 @@ public class GaleShapleyTest {
 		preferencesOfMen = new int[][] {};
 		preferencesOfWomen = new int[][] {};
 		match();
-		assertEquals(asList(), result);
+		assertEquals("", getResultString());
 	}
 
 	@Test
@@ -27,7 +29,12 @@ public class GaleShapleyTest {
 		preferencesOfMen = new int[][] { { 0 } };
 		preferencesOfWomen = new int[][] { { 0 } };
 		match();
-		assertEquals(asList(new Pair(0, 0)), result);
+		assertEquals("0,0", getResultString());
+	}
+
+	private String getResultString() {
+		List<String> parts = result.stream().map(p -> p.getFirst() + "," + p.getSecond()).collect(toList());
+		return Joiner.on(",").join(parts);
 	}
 
 	private void match() {

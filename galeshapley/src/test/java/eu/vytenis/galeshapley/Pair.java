@@ -28,4 +28,12 @@ public class Pair {
 	private List<Integer> toList() {
 		return asList(first, second);
 	}
+	
+	public int getFirst() {
+		return first;
+	}
+	
+	public int getSecond() {
+		return second;
+	}
 }
