@@ -40,7 +40,7 @@ public class Matcher {
 			addPair(i, j);
 		else {
 			Pair old = pairsByWomanIndex.get(j);
-			int preferenceOfOldMan = findPreferenceOfWoman(old.getFirst(), j);
+			int preferenceOfOldMan = findPreferenceOfWoman(old.getIndexOfMan(), j);
 			int preferenceOfNewMan = findPreferenceOfWoman(i, j);
 			boolean oldPreferred = preferenceOfOldMan < preferenceOfNewMan;
 			if (!oldPreferred) {
@@ -83,8 +83,8 @@ public class Matcher {
 	}
 
 	private void removePair(Pair pair) {
-		pairsByManIndex.remove(pair.getFirst());
-		pairsByWomanIndex.remove(pair.getSecond());
+		pairsByManIndex.remove(pair.getIndexOfMan());
+		pairsByWomanIndex.remove(pair.getIndexOfWoman());
 	}
 
 	private void addProposal(int indexOfMan, int indexOfWoman) {

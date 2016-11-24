@@ -7,12 +7,12 @@ import java.util.List;
 import com.google.common.base.Joiner;
 
 public class Pair {
-	private int first;
-	private int second;
+	private final int indexOfMan;
+	private final int indexOfWoman;
 
-	public Pair(int first, int second) {
-		this.first = first;
-		this.second = second;
+	public Pair(int indexOfMan, int indexOfWoman) {
+		this.indexOfMan = indexOfMan;
+		this.indexOfWoman = indexOfWoman;
 	}
 
 	@Override
@@ -28,15 +28,15 @@ public class Pair {
 	}
 
 	private List<Integer> toList() {
-		return asList(first, second);
+		return asList(indexOfMan, indexOfWoman);
 	}
 
-	public int getFirst() {
-		return first;
+	public int getIndexOfMan() {
+		return indexOfMan;
 	}
 
-	public int getSecond() {
-		return second;
+	public int getIndexOfWoman() {
+		return indexOfWoman;
 	}
 
 	@Override
@@ -45,6 +45,6 @@ public class Pair {
 	}
 
 	public String join(String separator) {
-		return Joiner.on(separator).join(first, second);
+		return Joiner.on(separator).join(indexOfMan, indexOfWoman);
 	}
 }
