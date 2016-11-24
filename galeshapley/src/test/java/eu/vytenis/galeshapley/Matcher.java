@@ -14,8 +14,16 @@ public class Matcher {
 
 	public List<Pair> match() {
 		List<Pair> result = new ArrayList<>();
+		List<Integer> womanTaken = new ArrayList<>();
 		for (int i = 0; i < preferencesOfMen.length; ++i) {
-			result.add(new Pair(i, preferencesOfMen[i][0]));
+			for (int j = 0; j < preferencesOfMen.length; ++j) {
+				int indexOfWoman = preferencesOfMen[i][j];
+				if (!womanTaken.contains(indexOfWoman)) {
+					result.add(new Pair(i, indexOfWoman));
+					womanTaken.add(indexOfWoman);
+					break;
+				}
+			}
 		}
 		return result;
 	}
