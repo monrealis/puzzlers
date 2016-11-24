@@ -1,8 +1,10 @@
 package eu.vytenis.galeshapley;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Matcher {
@@ -11,7 +13,7 @@ public class Matcher {
 	private final Set<Integer> menTaken = new HashSet<>();
 	private final Set<Integer> womenTaken = new HashSet<>();
 	private final Set<Integer>[] proposalsOfMenMade;
-	private final List<Pair> result = new ArrayList<>();
+	private final Map<Integer, Pair> result = new HashMap<>();
 
 	@SuppressWarnings("unchecked")
 	public Matcher(int[][] preferencesOfMen, int[][] preferencesOfWomen) {
@@ -27,7 +29,7 @@ public class Matcher {
 			try {
 				matchNext();
 			} catch (AllMenTaken e) {
-				return result;
+				return new ArrayList<>(result.values());
 			}
 		}
 	}
@@ -35,7 +37,27 @@ public class Matcher {
 	private void matchNext() throws AllMenTaken {
 		int i = nextFreeMan();
 		int j = getNextWoman(i);
-		addPair(i, j);
+		if (!womenTaken.contains(j))
+			addPair(i, j);
+		else {
+			Pair old = findPairByWoman(j);
+			int preferenceOfOldMan = findPreferenceOfWoman(old.getFirst(), j);
+			int preferenceOfNewMan = findPreferenceOfWoman(i, j);
+			boolean oldPreferred = preferenceOfOldMan < preferenceOfNewMan;
+			if (!oldPreferred) {
+				removePair(old);
+				addPair(i, j);
+			} else
+				proposalsOfMenMade[i].add(j);
+		}
+	}
+
+	private int findPreferenceOfWoman(int indexOfMan, int indexOfWoman) {
+		for (int i = 0; i < n(); ++i)
+			if (preferencesOfWomen[indexOfWoman][i] == indexOfMan)
+				return i;
+		throw new IllegalStateException();
+
 	}
 
 	private int nextFreeMan() throws AllMenTaken {
@@ -55,10 +77,23 @@ public class Matcher {
 	}
 
 	private void addPair(int indexOfMan, int indexOfWoman) {
-		result.add(new Pair(indexOfMan, indexOfWoman));
+		result.put(indexOfMan, new Pair(indexOfMan, indexOfWoman));
 		menTaken.add(indexOfMan);
 		womenTaken.add(indexOfWoman);
 		proposalsOfMenMade[indexOfMan].add(indexOfWoman);
+	}
+
+	private Pair findPairByWoman(int indexOfWoman) {
+		for (Pair pair : result.values())
+			if (pair.getSecond() == indexOfWoman)
+				return pair;
+		throw new IllegalStateException();
+	}
+
+	private void removePair(Pair pair) {
+		result.remove(pair.getFirst());
+		menTaken.remove(pair.getFirst());
+		womenTaken.remove(pair.getSecond());
 	}
 
 	private int n() {
