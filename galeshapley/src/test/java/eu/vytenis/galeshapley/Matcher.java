@@ -1,19 +1,18 @@
 package eu.vytenis.galeshapley;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class Matcher {
 	private final int[][] preferencesOfMen;
 	private final int[][] preferencesOfWomen;
-	private final Set<Integer> menTaken = new HashSet<>();
 	private final Set<Integer> womenTaken = new HashSet<>();
 	private final Set<Integer>[] proposalsOfMenMade;
-	private final Map<Integer, Pair> result = new HashMap<>();
+	private final Map<Integer, Pair> pairsByManIndex = new TreeMap<>();
 
 	@SuppressWarnings("unchecked")
 	public Matcher(int[][] preferencesOfMen, int[][] preferencesOfWomen) {
@@ -29,7 +28,7 @@ public class Matcher {
 			try {
 				matchNext();
 			} catch (AllMenTaken e) {
-				return new ArrayList<>(result.values());
+				return new ArrayList<>(pairsByManIndex.values());
 			}
 		}
 	}
@@ -62,7 +61,7 @@ public class Matcher {
 
 	private int nextFreeMan() throws AllMenTaken {
 		for (int i = 0; i < n(); ++i)
-			if (!menTaken.contains(i))
+			if (!pairsByManIndex.containsKey(i))
 				return i;
 		throw new AllMenTaken();
 	}
@@ -77,22 +76,20 @@ public class Matcher {
 	}
 
 	private void addPair(int indexOfMan, int indexOfWoman) {
-		result.put(indexOfMan, new Pair(indexOfMan, indexOfWoman));
-		menTaken.add(indexOfMan);
+		pairsByManIndex.put(indexOfMan, new Pair(indexOfMan, indexOfWoman));
 		womenTaken.add(indexOfWoman);
 		proposalsOfMenMade[indexOfMan].add(indexOfWoman);
 	}
 
 	private Pair findPairByWoman(int indexOfWoman) {
-		for (Pair pair : result.values())
+		for (Pair pair : pairsByManIndex.values())
 			if (pair.getSecond() == indexOfWoman)
 				return pair;
 		throw new IllegalStateException();
 	}
 
 	private void removePair(Pair pair) {
-		result.remove(pair.getFirst());
-		menTaken.remove(pair.getFirst());
+		pairsByManIndex.remove(pair.getFirst());
 		womenTaken.remove(pair.getSecond());
 	}
 
