@@ -20,7 +20,6 @@ public class Matcher {
 		proposalsOfMenMade = new Set[preferencesOfMen.length];
 		for (int i = 0; i < proposalsOfMenMade.length; ++i)
 			proposalsOfMenMade[i] = new HashSet<>();
-
 	}
 
 	public List<Pair> match() {
@@ -35,13 +34,8 @@ public class Matcher {
 
 	private void matchNext() throws AllMenTaken {
 		int i = nextFreeMan();
-		for (int j = 0; j < n(); ++j) {
-			int indexOfWoman = preferencesOfMen[i][j];
-			if (!womenTaken.contains(indexOfWoman)) {
-				addPair(i, indexOfWoman);
-				break;
-			}
-		}
+		int j = getNextWoman(i);
+		addPair(i, j);
 	}
 
 	private int nextFreeMan() throws AllMenTaken {
@@ -49,7 +43,15 @@ public class Matcher {
 			if (!menTaken.contains(i))
 				return i;
 		throw new AllMenTaken();
+	}
 
+	private int getNextWoman(int indexOfMan) {
+		Set<Integer> proposalsMade = proposalsOfMenMade[indexOfMan];
+		int[] preferences = preferencesOfMen[indexOfMan];
+		for (int i = 0; i < n(); ++i)
+			if (!proposalsMade.contains(preferences[i]))
+				return preferences[i];
+		throw new IllegalStateException();
 	}
 
 	private void addPair(int indexOfMan, int indexOfWoman) {

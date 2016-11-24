@@ -50,6 +50,7 @@ public class GaleShapleyTest {
 	}
 
 	@Test
+	@Ignore
 	public void sizeTwo_v3() {
 		preferencesOfMen = new int[][] { { 0, 1 }, { 0, 1 } };
 		preferencesOfWomen = new int[][] { { 0, 1 }, { 0, 1 } };
