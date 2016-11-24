@@ -11,8 +11,8 @@ public class Matcher {
 	private final int[][] preferencesOfMen;
 	private final int[][] preferencesOfWomen;
 	private final Set<Integer>[] proposalsOfMenMade;
-	private final Map<Integer, Couple> pairsByManIndex = new TreeMap<>();
-	private final Map<Integer, Couple> pairsByWomanIndex = new TreeMap<>();
+	private final Map<Integer, Couple> couplesByManIndex = new TreeMap<>();
+	private final Map<Integer, Couple> couplesByWomanIndex = new TreeMap<>();
 
 	@SuppressWarnings("unchecked")
 	public Matcher(int[][] preferencesOfMen, int[][] preferencesOfWomen) {
@@ -28,7 +28,7 @@ public class Matcher {
 			try {
 				matchNext();
 			} catch (AllMenTaken e) {
-				return new ArrayList<>(pairsByManIndex.values());
+				return new ArrayList<>(couplesByManIndex.values());
 			}
 		}
 	}
@@ -36,16 +36,16 @@ public class Matcher {
 	private void matchNext() throws AllMenTaken {
 		int i = nextFreeMan();
 		int j = getNextWoman(i);
-		if (!pairsByWomanIndex.containsKey(j))
-			addPair(i, j);
+		if (!couplesByWomanIndex.containsKey(j))
+			addCouple(i, j);
 		else {
-			Couple old = pairsByWomanIndex.get(j);
+			Couple old = couplesByWomanIndex.get(j);
 			int preferenceOfOldMan = findPreferenceOfWoman(old.getIndexOfMan(), j);
 			int preferenceOfNewMan = findPreferenceOfWoman(i, j);
 			boolean oldPreferred = preferenceOfOldMan < preferenceOfNewMan;
 			if (!oldPreferred) {
-				removePair(old);
-				addPair(i, j);
+				removeCouple(old);
+				addCouple(i, j);
 			} else
 				addProposal(i, j);
 		}
@@ -61,7 +61,7 @@ public class Matcher {
 
 	private int nextFreeMan() throws AllMenTaken {
 		for (int i = 0; i < n(); ++i)
-			if (!pairsByManIndex.containsKey(i))
+			if (!couplesByManIndex.containsKey(i))
 				return i;
 		throw new AllMenTaken();
 	}
@@ -75,16 +75,16 @@ public class Matcher {
 		throw new IllegalStateException();
 	}
 
-	private void addPair(int indexOfMan, int indexOfWoman) {
-		Couple pair = new Couple(indexOfMan, indexOfWoman);
-		pairsByManIndex.put(indexOfMan, pair);
-		pairsByWomanIndex.put(indexOfWoman, pair);
+	private void addCouple(int indexOfMan, int indexOfWoman) {
+		Couple couple = new Couple(indexOfMan, indexOfWoman);
+		couplesByManIndex.put(indexOfMan, couple);
+		couplesByWomanIndex.put(indexOfWoman, couple);
 		addProposal(indexOfMan, indexOfWoman);
 	}
 
-	private void removePair(Couple pair) {
-		pairsByManIndex.remove(pair.getIndexOfMan());
-		pairsByWomanIndex.remove(pair.getIndexOfWoman());
+	private void removeCouple(Couple pair) {
+		couplesByManIndex.remove(pair.getIndexOfMan());
+		couplesByWomanIndex.remove(pair.getIndexOfWoman());
 	}
 
 	private void addProposal(int indexOfMan, int indexOfWoman) {
