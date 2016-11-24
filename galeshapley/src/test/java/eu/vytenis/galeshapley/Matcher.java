@@ -11,8 +11,8 @@ public class Matcher {
 	private final int[][] preferencesOfMen;
 	private final int[][] preferencesOfWomen;
 	private final Set<Integer>[] proposalsOfMenMade;
-	private final Map<Integer, Pair> pairsByManIndex = new TreeMap<>();
-	private final Map<Integer, Pair> pairsByWomanIndex = new TreeMap<>();
+	private final Map<Integer, Couple> pairsByManIndex = new TreeMap<>();
+	private final Map<Integer, Couple> pairsByWomanIndex = new TreeMap<>();
 
 	@SuppressWarnings("unchecked")
 	public Matcher(int[][] preferencesOfMen, int[][] preferencesOfWomen) {
@@ -23,7 +23,7 @@ public class Matcher {
 			proposalsOfMenMade[i] = new HashSet<>();
 	}
 
-	public List<Pair> match() {
+	public List<Couple> match() {
 		while (true) {
 			try {
 				matchNext();
@@ -39,7 +39,7 @@ public class Matcher {
 		if (!pairsByWomanIndex.containsKey(j))
 			addPair(i, j);
 		else {
-			Pair old = pairsByWomanIndex.get(j);
+			Couple old = pairsByWomanIndex.get(j);
 			int preferenceOfOldMan = findPreferenceOfWoman(old.getIndexOfMan(), j);
 			int preferenceOfNewMan = findPreferenceOfWoman(i, j);
 			boolean oldPreferred = preferenceOfOldMan < preferenceOfNewMan;
@@ -76,13 +76,13 @@ public class Matcher {
 	}
 
 	private void addPair(int indexOfMan, int indexOfWoman) {
-		Pair pair = new Pair(indexOfMan, indexOfWoman);
+		Couple pair = new Couple(indexOfMan, indexOfWoman);
 		pairsByManIndex.put(indexOfMan, pair);
 		pairsByWomanIndex.put(indexOfWoman, pair);
 		addProposal(indexOfMan, indexOfWoman);
 	}
 
-	private void removePair(Pair pair) {
+	private void removePair(Couple pair) {
 		pairsByManIndex.remove(pair.getIndexOfMan());
 		pairsByWomanIndex.remove(pair.getIndexOfWoman());
 	}

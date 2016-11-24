@@ -15,7 +15,7 @@ import com.google.common.base.Joiner;
 public class GaleShapleyTest {
 	private int[][] preferencesOfMen;
 	private int[][] preferencesOfWomen;
-	private List<Pair> result;
+	private List<Couple> result;
 
 	@Test
 	public void sizeZero() {

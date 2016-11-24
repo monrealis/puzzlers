@@ -6,19 +6,19 @@ import java.util.List;
 
 import com.google.common.base.Joiner;
 
-public class Pair {
+public class Couple {
 	private final int indexOfMan;
 	private final int indexOfWoman;
 
-	public Pair(int indexOfMan, int indexOfWoman) {
+	public Couple(int indexOfMan, int indexOfWoman) {
 		this.indexOfMan = indexOfMan;
 		this.indexOfWoman = indexOfWoman;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Pair)
-			return toList().equals(((Pair) obj).toList());
+		if (obj instanceof Couple)
+			return toList().equals(((Couple) obj).toList());
 		return false;
 	}
 
