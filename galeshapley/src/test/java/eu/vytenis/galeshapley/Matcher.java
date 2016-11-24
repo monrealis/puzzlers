@@ -10,11 +10,17 @@ public class Matcher {
 	private final int[][] preferencesOfWomen;
 	private final Set<Integer> menTaken = new HashSet<>();
 	private final Set<Integer> womenTaken = new HashSet<>();
+	private final Set<Integer>[] proposalsOfMenMade;
 	private final List<Pair> result = new ArrayList<>();
 
+	@SuppressWarnings("unchecked")
 	public Matcher(int[][] preferencesOfMen, int[][] preferencesOfWomen) {
 		this.preferencesOfMen = preferencesOfMen;
 		this.preferencesOfWomen = preferencesOfWomen;
+		proposalsOfMenMade = new Set[preferencesOfMen.length];
+		for (int i = 0; i < proposalsOfMenMade.length; ++i)
+			proposalsOfMenMade[i] = new HashSet<>();
+
 	}
 
 	public List<Pair> match() {
@@ -50,6 +56,7 @@ public class Matcher {
 		result.add(new Pair(indexOfMan, indexOfWoman));
 		menTaken.add(indexOfMan);
 		womenTaken.add(indexOfWoman);
+		proposalsOfMenMade[indexOfMan].add(indexOfWoman);
 	}
 
 	private int n() {
