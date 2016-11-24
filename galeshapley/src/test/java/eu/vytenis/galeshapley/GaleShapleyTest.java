@@ -40,6 +40,14 @@ public class GaleShapleyTest {
 		assertEquals("0,0 1,1", getResultString());
 	}
 
+	@Test
+	public void sizeTwo_v2() {
+		preferencesOfMen = new int[][] { { 1, 0 }, { 0, 1 } };
+		preferencesOfWomen = new int[][] { { 1, 0 }, { 0, 1 } };
+		match();
+		assertEquals("0,1 1,0", getResultString());
+	}
+
 	private String getResultString() {
 		List<String> parts = result.stream().map(p -> p.join(",")).collect(toList());
 		return Joiner.on(" ").join(parts);

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Matcher {
-	private int[][] preferencesOfMen;
-	private int[][] preferencesOfWomen;
+	private final int[][] preferencesOfMen;
+	private final int[][] preferencesOfWomen;
 
 	public Matcher(int[][] preferencesOfMen, int[][] preferencesOfWomen) {
 		this.preferencesOfMen = preferencesOfMen;
@@ -14,8 +14,9 @@ public class Matcher {
 
 	public List<Pair> match() {
 		List<Pair> result = new ArrayList<>();
-		for (int i = 0; i < preferencesOfMen.length; ++i)
-			result.add(new Pair(preferencesOfMen[i][0], preferencesOfWomen[i][0]));
+		for (int i = 0; i < preferencesOfMen.length; ++i) {
+			result.add(new Pair(i, preferencesOfMen[i][0]));
+		}
 		return result;
 	}
 }
