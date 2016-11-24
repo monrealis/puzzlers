@@ -36,16 +36,17 @@ public class Matcher {
 	private void matchNext() throws AllMenTaken {
 		int i = nextFreeMan();
 		int j = getNextWoman(i);
-		if (!couplesByWomanIndex.containsKey(j))
-			addCouple(i, j);
-		else {
+		if (!couplesByWomanIndex.containsKey(j)) {
+			addProposal(i, j);
+			addMarriage(new Couple(i, j));
+		} else {
 			Couple old = couplesByWomanIndex.get(j);
 			int preferenceOfOldMan = findPreferenceOfWoman(old.getIndexOfMan(), j);
 			int preferenceOfNewMan = findPreferenceOfWoman(i, j);
 			boolean oldPreferred = preferenceOfOldMan < preferenceOfNewMan;
 			if (!oldPreferred) {
-				removeCouple(old);
-				addCouple(i, j);
+				removeMarriage(old);
+				addMarriage(new Couple(i, j));
 			} else
 				addProposal(i, j);
 		}
@@ -75,16 +76,14 @@ public class Matcher {
 		throw new IllegalStateException();
 	}
 
-	private void addCouple(int indexOfMan, int indexOfWoman) {
-		Couple couple = new Couple(indexOfMan, indexOfWoman);
-		couplesByManIndex.put(indexOfMan, couple);
-		couplesByWomanIndex.put(indexOfWoman, couple);
-		addProposal(indexOfMan, indexOfWoman);
+	private void addMarriage(Couple couple) {
+		couplesByManIndex.put(couple.getIndexOfMan(), couple);
+		couplesByWomanIndex.put(couple.getIndexOfWoman(), couple);
 	}
 
-	private void removeCouple(Couple pair) {
-		couplesByManIndex.remove(pair.getIndexOfMan());
-		couplesByWomanIndex.remove(pair.getIndexOfWoman());
+	private void removeMarriage(Couple couple) {
+		couplesByManIndex.remove(couple.getIndexOfMan());
+		couplesByWomanIndex.remove(couple.getIndexOfWoman());
 	}
 
 	private void addProposal(int indexOfMan, int indexOfWoman) {
