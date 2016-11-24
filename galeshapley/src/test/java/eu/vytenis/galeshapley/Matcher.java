@@ -10,9 +10,9 @@ import java.util.TreeMap;
 public class Matcher {
 	private final int[][] preferencesOfMen;
 	private final int[][] preferencesOfWomen;
-	private final Set<Integer> womenTaken = new HashSet<>();
 	private final Set<Integer>[] proposalsOfMenMade;
 	private final Map<Integer, Pair> pairsByManIndex = new TreeMap<>();
+	private final Map<Integer, Pair> pairsByWomanIndex = new TreeMap<>();
 
 	@SuppressWarnings("unchecked")
 	public Matcher(int[][] preferencesOfMen, int[][] preferencesOfWomen) {
@@ -36,10 +36,10 @@ public class Matcher {
 	private void matchNext() throws AllMenTaken {
 		int i = nextFreeMan();
 		int j = getNextWoman(i);
-		if (!womenTaken.contains(j))
+		if (!pairsByWomanIndex.containsKey(j))
 			addPair(i, j);
 		else {
-			Pair old = findPairByWoman(j);
+			Pair old = pairsByWomanIndex.get(j);
 			int preferenceOfOldMan = findPreferenceOfWoman(old.getFirst(), j);
 			int preferenceOfNewMan = findPreferenceOfWoman(i, j);
 			boolean oldPreferred = preferenceOfOldMan < preferenceOfNewMan;
@@ -47,7 +47,7 @@ public class Matcher {
 				removePair(old);
 				addPair(i, j);
 			} else
-				proposalsOfMenMade[i].add(j);
+				addProposal(i, j);
 		}
 	}
 
@@ -76,21 +76,19 @@ public class Matcher {
 	}
 
 	private void addPair(int indexOfMan, int indexOfWoman) {
-		pairsByManIndex.put(indexOfMan, new Pair(indexOfMan, indexOfWoman));
-		womenTaken.add(indexOfWoman);
-		proposalsOfMenMade[indexOfMan].add(indexOfWoman);
-	}
-
-	private Pair findPairByWoman(int indexOfWoman) {
-		for (Pair pair : pairsByManIndex.values())
-			if (pair.getSecond() == indexOfWoman)
-				return pair;
-		throw new IllegalStateException();
+		Pair pair = new Pair(indexOfMan, indexOfWoman);
+		pairsByManIndex.put(indexOfMan, pair);
+		pairsByWomanIndex.put(indexOfWoman, pair);
+		addProposal(indexOfMan, indexOfWoman);
 	}
 
 	private void removePair(Pair pair) {
 		pairsByManIndex.remove(pair.getFirst());
-		womenTaken.remove(pair.getSecond());
+		pairsByWomanIndex.remove(pair.getSecond());
+	}
+
+	private void addProposal(int indexOfMan, int indexOfWoman) {
+		proposalsOfMenMade[indexOfMan].add(indexOfWoman);
 	}
 
 	private int n() {
