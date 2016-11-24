@@ -6,6 +6,8 @@ import java.util.List;
 public class Matcher {
 	private final int[][] preferencesOfMen;
 	private final int[][] preferencesOfWomen;
+	private final List<Integer> womanTaken = new ArrayList<>();
+	private final List<Pair> result = new ArrayList<>();
 
 	public Matcher(int[][] preferencesOfMen, int[][] preferencesOfWomen) {
 		this.preferencesOfMen = preferencesOfMen;
@@ -13,18 +15,24 @@ public class Matcher {
 	}
 
 	public List<Pair> match() {
-		List<Pair> result = new ArrayList<>();
-		List<Integer> womanTaken = new ArrayList<>();
-		for (int i = 0; i < preferencesOfMen.length; ++i) {
-			for (int j = 0; j < preferencesOfMen.length; ++j) {
+		for (int i = 0; i < n(); ++i) {
+			for (int j = 0; j < n(); ++j) {
 				int indexOfWoman = preferencesOfMen[i][j];
 				if (!womanTaken.contains(indexOfWoman)) {
-					result.add(new Pair(i, indexOfWoman));
-					womanTaken.add(indexOfWoman);
+					addPair(i, indexOfWoman);
 					break;
 				}
 			}
 		}
 		return result;
+	}
+
+	private void addPair(int indexOfMan, int indexOfWoman) {
+		result.add(new Pair(indexOfMan, indexOfWoman));
+		womanTaken.add(indexOfWoman);
+	}
+
+	private int n() {
+		return preferencesOfMen.length;
 	}
 }
