@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.base.Joiner;
@@ -58,7 +57,6 @@ public class GaleShapleyTest {
 	}
 
 	@Test
-	@Ignore
 	public void sizeTwo_v4() {
 		preferencesOfMen = new int[][] { { 0, 1 }, { 0, 1 } };
 		preferencesOfWomen = new int[][] { { 1, 0 }, { 1, 0 } };
