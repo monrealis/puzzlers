@@ -10,17 +10,15 @@ import java.util.TreeMap;
 public class Matcher {
 	private final int[][] preferencesOfMen;
 	private final int[][] preferencesOfWomen;
-	private final Set<Integer>[] proposalsOfMenMade;
+	private final Map<Integer, Set<Integer>> proposalsOfMenMade = new TreeMap<>();
 	private final Map<Integer, Couple> couplesByManIndex = new TreeMap<>();
 	private final Map<Integer, Couple> couplesByWomanIndex = new TreeMap<>();
 
-	@SuppressWarnings("unchecked")
 	public Matcher(int[][] preferencesOfMen, int[][] preferencesOfWomen) {
 		this.preferencesOfMen = preferencesOfMen;
 		this.preferencesOfWomen = preferencesOfWomen;
-		proposalsOfMenMade = new Set[preferencesOfMen.length];
-		for (int i = 0; i < proposalsOfMenMade.length; ++i)
-			proposalsOfMenMade[i] = new HashSet<>();
+		for (int i = 0; i < n(); ++i)
+			proposalsOfMenMade.put(i, new HashSet<>());
 	}
 
 	public List<Couple> match() {
@@ -68,7 +66,7 @@ public class Matcher {
 	}
 
 	private int getNextWoman(int indexOfMan) {
-		Set<Integer> proposalsMade = proposalsOfMenMade[indexOfMan];
+		Set<Integer> proposalsMade = proposalsOfMenMade.get(indexOfMan);
 		int[] preferences = preferencesOfMen[indexOfMan];
 		for (int i = 0; i < n(); ++i)
 			if (!proposalsMade.contains(preferences[i]))
@@ -87,7 +85,7 @@ public class Matcher {
 	}
 
 	private void addProposal(Couple couple) {
-		proposalsOfMenMade[couple.getIndexOfMan()].add(couple.getIndexOfWoman());
+		proposalsOfMenMade.get(couple.getIndexOfMan()).add(couple.getIndexOfWoman());
 	}
 
 	private int n() {
