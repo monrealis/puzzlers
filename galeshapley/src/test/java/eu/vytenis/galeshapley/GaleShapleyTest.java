@@ -64,6 +64,14 @@ public class GaleShapleyTest {
 		assertEquals("0,1 1,0", getResultString());
 	}
 
+	@Test
+	public void youtube_pc5WSJkFk24() {
+		preferencesOfMen = new int[][] { { 2, 1, 0, 3 }, { 1, 3, 0, 2 }, { 2, 0, 3, 1 }, { 0, 1, 2, 3 } };
+		preferencesOfWomen = new int[][] { { 0, 2, 1, 3 }, { 2, 3, 1, 0 }, { 1, 2, 3, 0 }, { 3, 1, 0, 2 } };
+		match();
+		assertEquals("0,0 1,3 2,2 3,1", getResultString());
+	}
+
 	private String getResultString() {
 		List<String> parts = result.stream().map(p -> p.join(",")).collect(toList());
 		return Joiner.on(" ").join(parts);
