@@ -34,21 +34,22 @@ public class Matcher {
 	}
 
 	private void matchNext() throws AllMenTaken {
-		int i = nextFreeMan();
-		int j = getNextWoman(i);
-		if (!couplesByWomanIndex.containsKey(j)) {
-			addProposal(i, j);
-			addMarriage(new Couple(i, j));
+		int indexOfFreeMan = nextFreeMan();
+		int indexOfPreferredWoman = getNextWoman(indexOfFreeMan);
+		Couple oldCouple = couplesByWomanIndex.get(indexOfPreferredWoman);
+		Couple newCouple = new Couple(indexOfFreeMan, indexOfPreferredWoman);
+		if (oldCouple == null) {
+			addProposal(indexOfFreeMan, indexOfPreferredWoman);
+			addMarriage(newCouple);
 		} else {
-			Couple old = couplesByWomanIndex.get(j);
-			int preferenceOfOldMan = findPreferenceOfWoman(old.getIndexOfMan(), j);
-			int preferenceOfNewMan = findPreferenceOfWoman(i, j);
-			boolean oldPreferred = preferenceOfOldMan < preferenceOfNewMan;
-			if (!oldPreferred) {
-				removeMarriage(old);
-				addMarriage(new Couple(i, j));
+			int priorityOfOldMan = findPreferenceOfWoman(oldCouple.getIndexOfMan(), indexOfPreferredWoman);
+			int priorityOfNewMan = findPreferenceOfWoman(indexOfFreeMan, indexOfPreferredWoman);
+			boolean oldCouplePreferred = priorityOfOldMan < priorityOfNewMan;
+			if (!oldCouplePreferred) {
+				removeMarriage(oldCouple);
+				addMarriage(newCouple);
 			} else
-				addProposal(i, j);
+				addProposal(indexOfFreeMan, indexOfPreferredWoman);
 		}
 	}
 
@@ -96,6 +97,5 @@ public class Matcher {
 
 	private static class AllMenTaken extends Exception {
 		private static final long serialVersionUID = 1L;
-
 	}
 }
