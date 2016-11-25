@@ -24,13 +24,12 @@ public class Matcher {
 	}
 
 	public List<Couple> match() {
-		while (true) {
+		while (true)
 			try {
 				matchNext();
 			} catch (AllMenTaken e) {
 				return new ArrayList<>(couplesByManIndex.values());
 			}
-		}
 	}
 
 	private void matchNext() throws AllMenTaken {
@@ -39,20 +38,19 @@ public class Matcher {
 		Couple oldCouple = couplesByWomanIndex.get(indexOfPreferredWoman);
 		Couple newCouple = new Couple(indexOfFreeMan, indexOfPreferredWoman);
 		if (oldCouple == null) {
-			addProposal(indexOfFreeMan, indexOfPreferredWoman);
+			addProposal(newCouple);
 			addMarriage(newCouple);
 		} else if (isNewManPreferredByWoman(oldCouple, newCouple)) {
 			removeMarriage(oldCouple);
 			addMarriage(newCouple);
 		} else
-			addProposal(indexOfFreeMan, indexOfPreferredWoman);
+			addProposal(newCouple);
 	}
 
 	private boolean isNewManPreferredByWoman(Couple oldCouple, Couple newCouple) {
 		int priorityOfOldMan = findPreferenceOfWoman(oldCouple);
 		int priorityOfNewMan = findPreferenceOfWoman(newCouple);
-		boolean newCouplePreferred = priorityOfOldMan > priorityOfNewMan;
-		return newCouplePreferred;
+		return priorityOfOldMan > priorityOfNewMan;
 	}
 
 	private int findPreferenceOfWoman(Couple couple) {
@@ -88,8 +86,8 @@ public class Matcher {
 		couplesByWomanIndex.remove(couple.getIndexOfWoman());
 	}
 
-	private void addProposal(int indexOfMan, int indexOfWoman) {
-		proposalsOfMenMade[indexOfMan].add(indexOfWoman);
+	private void addProposal(Couple couple) {
+		proposalsOfMenMade[couple.getIndexOfMan()].add(couple.getIndexOfWoman());
 	}
 
 	private int n() {
