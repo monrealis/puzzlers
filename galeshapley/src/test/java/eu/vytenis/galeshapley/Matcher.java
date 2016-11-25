@@ -34,34 +34,35 @@ public class Matcher {
 	}
 
 	private void matchNext() throws AllMenTaken {
-		int indexOfFreeMan = nextFreeMan();
+		int indexOfFreeMan = getNextFreeMan();
 		int indexOfPreferredWoman = getNextWoman(indexOfFreeMan);
 		Couple oldCouple = couplesByWomanIndex.get(indexOfPreferredWoman);
 		Couple newCouple = new Couple(indexOfFreeMan, indexOfPreferredWoman);
 		if (oldCouple == null) {
 			addProposal(indexOfFreeMan, indexOfPreferredWoman);
 			addMarriage(newCouple);
-		} else {
-			int priorityOfOldMan = findPreferenceOfWoman(oldCouple.getIndexOfMan(), indexOfPreferredWoman);
-			int priorityOfNewMan = findPreferenceOfWoman(indexOfFreeMan, indexOfPreferredWoman);
-			boolean oldCouplePreferred = priorityOfOldMan < priorityOfNewMan;
-			if (!oldCouplePreferred) {
-				removeMarriage(oldCouple);
-				addMarriage(newCouple);
-			} else
-				addProposal(indexOfFreeMan, indexOfPreferredWoman);
-		}
+		} else if (isNewManPreferredByWoman(oldCouple, newCouple)) {
+			removeMarriage(oldCouple);
+			addMarriage(newCouple);
+		} else
+			addProposal(indexOfFreeMan, indexOfPreferredWoman);
 	}
 
-	private int findPreferenceOfWoman(int indexOfMan, int indexOfWoman) {
+	private boolean isNewManPreferredByWoman(Couple oldCouple, Couple newCouple) {
+		int priorityOfOldMan = findPreferenceOfWoman(oldCouple);
+		int priorityOfNewMan = findPreferenceOfWoman(newCouple);
+		boolean newCouplePreferred = priorityOfOldMan > priorityOfNewMan;
+		return newCouplePreferred;
+	}
+
+	private int findPreferenceOfWoman(Couple couple) {
 		for (int i = 0; i < n(); ++i)
-			if (preferencesOfWomen[indexOfWoman][i] == indexOfMan)
+			if (preferencesOfWomen[couple.getIndexOfWoman()][i] == couple.getIndexOfMan())
 				return i;
 		throw new IllegalStateException();
-
 	}
 
-	private int nextFreeMan() throws AllMenTaken {
+	private int getNextFreeMan() throws AllMenTaken {
 		for (int i = 0; i < n(); ++i)
 			if (!couplesByManIndex.containsKey(i))
 				return i;
