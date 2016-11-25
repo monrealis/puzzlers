@@ -35,6 +35,10 @@ public class Matcher {
 		int indexOfPreferredWoman = getNextWoman(indexOfFreeMan);
 		Couple oldCouple = couplesByWomanIndex.get(indexOfPreferredWoman);
 		Couple newCouple = new Couple(indexOfFreeMan, indexOfPreferredWoman);
+		adjustMarriages(oldCouple, newCouple);
+	}
+
+	private void adjustMarriages(Couple oldCouple, Couple newCouple) {
 		if (oldCouple == null) {
 			addProposal(newCouple);
 			addMarriage(newCouple);
