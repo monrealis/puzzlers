@@ -1,4 +1,4 @@
-package eu.vytenis.galeshapley;
+package eu.vytenis.galeshapley.slim;
 
 import static java.util.Arrays.asList;
 

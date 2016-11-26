@@ -1,4 +1,4 @@
-package eu.vytenis.galeshapley;
+package eu.vytenis.galeshapley.slim;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
@@ -9,9 +9,12 @@ import org.junit.Test;
 
 import com.google.common.base.Joiner;
 
+import eu.vytenis.galeshapley.slim.Couple;
+import eu.vytenis.galeshapley.slim.Matcher;
+
 //https://www.youtube.com/watch?v=pc5WSJkFk24
 //https://en.wikipedia.org/wiki/Stable_marriage_problem
-public class GaleShapleyTest {
+public class MatcherTest {
 	private int[][] preferencesOfMen;
 	private int[][] preferencesOfWomen;
 	private List<Couple> result;

@@ -1,4 +1,4 @@
-package eu.vytenis.galeshapley;
+package eu.vytenis.galeshapley.slim;
 
 import java.util.ArrayList;
 import java.util.HashSet;
