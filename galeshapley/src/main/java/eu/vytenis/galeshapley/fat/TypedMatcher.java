@@ -11,10 +11,14 @@ import eu.vytenis.galeshapley.slim.Matcher;
 public class TypedMatcher<M, W> {
 	private final W[][] preferencesOfMen;
 	private final M[][] preferencesOfWomen;
+	private final List<M> men;
+	private final List<W> women;
 
-	public TypedMatcher(W[][] preferencesOfMen, M[][] preferencesOfWomen) {
+	public TypedMatcher(W[][] preferencesOfMen, M[][] preferencesOfWomen, M[] orderOfMen, W[] orderOfWomen) {
 		this.preferencesOfMen = preferencesOfMen;
 		this.preferencesOfWomen = preferencesOfWomen;
+		men = asList(orderOfMen);
+		women = asList(orderOfWomen);
 	}
 
 	public List<TypedCouple<M, W>> match() {
@@ -27,8 +31,8 @@ public class TypedMatcher<M, W> {
 	}
 
 	private TypedCouple<M, W> toTypedCouple(Couple c) {
-		M man = getMen().get(0);
-		W woman = getWomen().get(0);
+		M man = getMen().get(c.getIndexOfMan());
+		W woman = getWomen().get(c.getIndexOfWoman());
 		return new TypedCouple<M, W>(man, woman);
 	}
 
@@ -65,11 +69,11 @@ public class TypedMatcher<M, W> {
 	}
 
 	private List<M> getMen() {
-		return asList(preferencesOfWomen[0]);
+		return men;
 
 	}
 
 	private List<W> getWomen() {
-		return asList(preferencesOfMen[0]);
+		return women;
 	}
 }

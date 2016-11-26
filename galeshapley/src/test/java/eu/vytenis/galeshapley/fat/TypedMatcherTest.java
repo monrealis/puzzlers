@@ -1,13 +1,18 @@
 package eu.vytenis.galeshapley.fat;
 
-import static eu.vytenis.galeshapley.fat.Man.*;
-import static eu.vytenis.galeshapley.fat.Woman.*;
+import static eu.vytenis.galeshapley.fat.Man.Charlie;
+import static eu.vytenis.galeshapley.fat.Man.Dennis;
+import static eu.vytenis.galeshapley.fat.Man.Frank;
+import static eu.vytenis.galeshapley.fat.Man.Mac;
+import static eu.vytenis.galeshapley.fat.Woman.Jill;
+import static eu.vytenis.galeshapley.fat.Woman.Kate;
+import static eu.vytenis.galeshapley.fat.Woman.Mary;
+import static eu.vytenis.galeshapley.fat.Woman.Rhea;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.base.Joiner;
@@ -52,7 +57,9 @@ public class TypedMatcherTest {
 	}
 
 	private void match() {
-		couples = new TypedMatcher<Man, Woman>(preferencesOfMen, preferencesOfWomen).match();
+		TypedMatcher<Man, Woman> matcher;
+		matcher = new TypedMatcher<Man, Woman>(preferencesOfMen, preferencesOfWomen, Man.values(), Woman.values());
+		couples = matcher.match();
 	}
 
 	private String getResultString() {
