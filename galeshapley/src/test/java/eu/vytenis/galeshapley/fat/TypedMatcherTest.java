@@ -19,6 +19,8 @@ public class TypedMatcherTest {
 
 	@Test
 	public void size0() {
+		preferencesOfMen = new Woman[][] {};
+		preferencesOfWomen = new Man[][] {};
 		match();
 		assertEquals("", getResultString());
 	}
