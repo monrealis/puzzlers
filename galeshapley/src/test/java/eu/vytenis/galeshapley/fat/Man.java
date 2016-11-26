@@ -1,6 +1,5 @@
 package eu.vytenis.galeshapley.fat;
 
 public enum Man {
-	John
-
+	Frank, Dennis, Mac, Charlie
 }

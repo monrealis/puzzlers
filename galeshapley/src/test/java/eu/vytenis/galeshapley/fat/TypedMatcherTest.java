@@ -1,12 +1,13 @@
 package eu.vytenis.galeshapley.fat;
 
-import static eu.vytenis.galeshapley.fat.Man.John;
-import static eu.vytenis.galeshapley.fat.Woman.Sally;
+import static eu.vytenis.galeshapley.fat.Man.Frank;
+import static eu.vytenis.galeshapley.fat.Woman.Rhea;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.base.Joiner;
@@ -26,10 +27,19 @@ public class TypedMatcherTest {
 
 	@Test
 	public void size1() {
-		preferencesOfMen = new Woman[][] { { Sally } };
-		preferencesOfWomen = new Man[][] { { John } };
+		preferencesOfMen = new Woman[][] { { Rhea } };
+		preferencesOfWomen = new Man[][] { { Frank } };
 		match();
-		assertEquals("John,Sally", getResultString());
+		assertEquals("Frank,Rhea", getResultString());
+	}
+
+	@Test
+	@Ignore
+	public void youtube_pc5WSJkFk24() {
+		preferencesOfMen = new Woman[][] { {}, {}, {}, {} };
+		preferencesOfWomen = new Man[][] { {}, {}, {}, {} };
+		match();
+		assertEquals("0,0 1,3 2,2 3,1", getResultString());
 	}
 
 	private void match() {
