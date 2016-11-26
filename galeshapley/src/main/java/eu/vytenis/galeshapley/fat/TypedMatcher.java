@@ -48,11 +48,15 @@ public class TypedMatcher<M, W> {
 
 	private int[] getPreferencesOfMan(int manIndex) {
 		int[] r = new int[n()];
+		for (int i = 0; i < n(); ++i)
+			r[i] = getWomen().indexOf(preferencesOfMen[manIndex][i]);
 		return r;
 	}
 
 	private int[] getPreferencesOfWoman(int womanIndex) {
 		int[] r = new int[n()];
+		for (int i = 0; i < n(); ++i)
+			r[i] = getMen().indexOf(preferencesOfMen[womanIndex][i]);
 		return r;
 	}
 
