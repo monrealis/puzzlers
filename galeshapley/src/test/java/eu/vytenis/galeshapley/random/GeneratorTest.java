@@ -44,8 +44,14 @@ public class GeneratorTest {
 	}
 
 	@Test
+	@Ignore
 	public void match1000() {
 		match(1000);
+	}
+
+	@Test
+	public void match10000() {
+		match(10000);
 	}
 
 	private void match(int n) {
