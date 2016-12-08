@@ -6,9 +6,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.apache.commons.math3.fraction.Fraction;
-import org.apache.commons.math3.fraction.ProperFractionFormat;
-
 import com.google.common.base.Joiner;
 
 public abstract class SplitterFixture {

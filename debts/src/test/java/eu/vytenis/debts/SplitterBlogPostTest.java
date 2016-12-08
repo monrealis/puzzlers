@@ -1,6 +1,5 @@
 package eu.vytenis.debts;
 
-import org.apache.commons.math3.fraction.Fraction;
 import org.junit.Test;
 
 public class SplitterBlogPostTest extends SplitterFixture {

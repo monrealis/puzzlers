@@ -2,8 +2,6 @@ package eu.vytenis.debts;
 
 import static java.util.Arrays.stream;
 
-import org.apache.commons.math3.fraction.Fraction;
-
 public class Fractions {
 	public static Fraction min(Fraction... fractions) {
 		return stream(fractions).reduce(Fractions::minOfTwo).get();

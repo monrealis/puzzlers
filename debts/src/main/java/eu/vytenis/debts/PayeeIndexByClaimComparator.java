@@ -2,8 +2,6 @@ package eu.vytenis.debts;
 
 import java.util.Comparator;
 
-import org.apache.commons.math3.fraction.Fraction;
-
 public class PayeeIndexByClaimComparator implements Comparator<Integer> {
 	private final Fraction[] claims;
 

@@ -3,7 +3,6 @@ package eu.vytenis.debts;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.math3.fraction.Fraction;
 import org.junit.Test;
 
 public class SplitterOtherCasesTest extends SplitterFixture {
