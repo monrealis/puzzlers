@@ -96,7 +96,7 @@ public class SplitterTest {
 			checkInput();
 			prepareSquashedInput();
 			iterateCharacterByCharacter();
-			addNextLineIfNotEmpty();
+			addCurrentLineIfNotEmpty();
 			return joinLines();
 		}
 
@@ -149,7 +149,7 @@ public class SplitterTest {
 			return currentLineTrimmed().indexOf(' ') < 0;
 		}
 
-		private void addNextLineIfNotEmpty() {
+		private void addCurrentLineIfNotEmpty() {
 			if (currentLineTrimmed().isEmpty())
 				return;
 			addWholeLine();
